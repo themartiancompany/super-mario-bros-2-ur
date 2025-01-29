@@ -68,8 +68,6 @@ depends=(
 )
 if [[ "${_retroarch}" == "true" ]]; then
   depends+=(
-    # retroarch # (after system libraries install
-                #  will be ready in inteppacman)
     "libretro-quicknes"
   )
 fi
@@ -109,7 +107,7 @@ elif [[ "${_evmfs}" == "true" ]]; then
     "evmfs"
     "${_zpaq_archiver}"
   )
-  if [[ ! " ${DLAGENTS[*]} " == " evmfs::" ]]; then
+  if [[ ! " ${DLAGENTS[*]} " == *" evmfs::"* ]]; then
     _msg=(
       "no download agent configured to manage"
       "Ethereum Virtual Machine File System"
@@ -253,6 +251,10 @@ package() {
   local \
     _game
   _game="${pkgdir}/usr/games/${_app_id}"
+  install \
+    -Dm644 \
+    "${_app_id}.nes" \
+    "${pkgdir}/usr/games/${_app_id}/${_app_id}.nes"
   echo \
     "$(_usr_get)/games/${_app_id}/${_uuid}.bin" > \
     "${_game}/any"
@@ -264,10 +266,6 @@ package() {
     -Dm644 \
     "${_app_id}.png" \
     "${pkgdir}/usr/share/icons/${_app_id}-${_uuid}.png"
-  install \
-    -Dm644 \
-    "${_app_id}.nes" \
-    "${pkgdir}/usr/games/${_app_id}/${_app_id}.nes"
 }
 
 # vim:set sw=2 sts=-1 et:
