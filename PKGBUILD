@@ -66,6 +66,13 @@ depends=(
   "${_emulators[@]}"
   "videogame-launcher"
 )
+if [[ "${_retroarch}" == "true" ]]; then
+  depends+=(
+    # retroarch # (after system libraries install
+                #  will be ready in inteppacman)
+    "libretro-quicknes"
+  )
+fi
 makedepends=()
 _archive="https://archive.org"
 _wikimedia="https://upload.wikimedia.org"
