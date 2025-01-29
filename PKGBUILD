@@ -94,6 +94,14 @@ source=(
 sha256sums=(
   "593e726db737390c7cd41e28a570d2ab19a3383d9ae163171a1afc14acaa6019"
 )
+if [[ "${_os}" == "Android" ]]; then
+  source+=(
+    "android-launcher"
+  )
+  sha256sums+=(
+    "2f45ce7058e165ef755e956e713f5e86814bccce7937138bb214230be31a62cf"
+  )
+fi
 if [[ "${_archive}" == "true" ]]; then
   _rom="${_app_id}.nes::${_archive_rom_uri}"
   _rom_sum="0b3d9e1f01ed1668205bab34d6c82b0e281456e137352e4f36a9b2cfa3b66dea"
@@ -266,6 +274,13 @@ package() {
     -Dm644 \
     "${_app_id}.png" \
     "${pkgdir}/usr/share/icons/${_app_id}-${_uuid}.png"
+  if [[ "${_os}" == "Android" ]]; then
+    install \
+      -Dm755 \
+      "android-launcher" \
+      "${pkgdir}/usr/bin/super-mario-bros"
+  fi
+
 }
 
 # vim:set sw=2 sts=-1 et:

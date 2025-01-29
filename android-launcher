@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+videogame-launcher \
+  -e \
+    "retroarch" \
+  -p \
+    "nes" \
+  "com.nintendo.SuperMarioBros"
