@@ -255,18 +255,30 @@ prepare() {
   _desktop_file_prepare
 }
 
+_pkgdir_get() {
+  local \
+    _pkgdir="${1}"
+  realpath \
+    "${_pkgdir}/../../../.."
+}
+
 package() {
   local \
     _game_dir \
-    _rom_dir
+    _rom_dir \
+    _rom_install_dir
   _game_dir="/usr/games/${_app_id}"
   install \
     -vdm755 \
     "${pkgdir}${_game_dir}"
   if [[ "${_os}" == "GNU/Linux" ]]; then
     _rom_dir="${_game_dir}"
+    _rom_install_dir="${pkgdir}${_rom_dir}/${_uuid}.nes"
   elif [[ "${_os}" == "Android" ]]; then
     _rom_dir="/storage/emulated/0/Android/media/${_app_id}"
+    _rom_install_dir="$( \
+      _pkgdir_get \
+        "${pkgdir}")${_rom_dir}"
     ln \
       -s \
       "${_rom_dir}/${_uuid}.nes" \
@@ -275,7 +287,7 @@ package() {
   install \
     -vDm644 \
     "${_app_id}.nes" \
-    "${pkgdir}${_rom_dir}/${_uuid}.nes"
+    "${_rom_install_dir}/${_uuid}.nes"
   echo \
     "${_rom_dir}/${_uuid}.nes" > \
     "${pkgdir}${_game_dir}/any"
