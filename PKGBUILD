@@ -257,15 +257,25 @@ prepare() {
 
 package() {
   local \
-    _game
-  _game="${pkgdir}/usr/games/${_app_id}"
+    _game_dir \
+    _rom_path
+  _game_dir="${pkgdir}/usr/games/${_app_id}"
+  if [[ "${_os}" == "GNU/Linux" ]]; then
+    _rom_dir="${_game_dir}"
+  elif [[ "${_os}" == "GNU/Linux" ]]; then
+    _rom_dir="${pkgdir}/home/storage/shared/Android/media/${_app_id}"
+    ln \
+      -s \
+      "${_rom_dir}/${_app_id}.nes" \
+      "${_game_dir}/${_app_id}.nes"
+  fi
   install \
     -Dm644 \
     "${_app_id}.nes" \
-    "${pkgdir}/usr/games/${_app_id}/${_app_id}.nes"
+    "${_rom_dir}/${_app_id}.nes"
   echo \
     "$(_usr_get)/games/${_app_id}/${_uuid}.bin" > \
-    "${_game}/any"
+    "${_game_dir}/any"
   install \
     -Dm755 \
     "${_app_id}.desktop" \
