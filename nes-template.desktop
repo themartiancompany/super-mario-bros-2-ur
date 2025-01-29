@@ -3,10 +3,19 @@ Name=%_title%
 Comment=%pkgdesc%
 Type=Application
 TryExec=fceux
-Exec=fceux "/usr/games/%_app_id%/%_app_id%.nes"
-Icon=%_app_id%
+Exec=videogame-launcher -e "%_game_launcher%" -l "%_game_language%" "%_app_id%"
+Icon=%_app_id%-%_uuid%
 Terminal=false
-Categories=Games;
+Categories=Game;
 Keywords=NES
+Actions=preferences;fullscreen;
+
+[Desktop Action fullscreen]
+Name=Launch in fullscreen
+Exec=videogame-launcher -f -e "%_game_launcher%" -l "%_game_language%" "%_app_id%"
+
+[Desktop Action preferences]
+Name=Preferences
+Exec=fceux
 
 X-Desktop-File-Install-Version=0.26

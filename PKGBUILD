@@ -25,16 +25,27 @@
 _os="$( \
   uname \
     -o)"
-_nes_emulator="fceux"
 _dl_agent="true"
+_zpaq_archiver="lrzip"
+_retroarch="false"
+_fceux="true"
+_emulators=()
 if [[ "${_os}" == "Android" ]]; then
-  _zpaq_archiver="zpaq"
+  _emulator="retroarch"
+  _retroarch="true"
+  _emulators+=(
+    "${_emulator}"
+  )
 elif [[ "${_os}" == "GNU/Linux" ]]; then
-  _zpaq_archiver="lrzip"
+  _emulator="fceux"
+  _emulators+=(
+    "${_emulator}"
+  )
 fi
 _archive="false"
 _evmfs="true"
 _app_id="com.nintendo.SuperMarioBros"
+_uuid="NES-NROM-256-01"
 _title="Super Mario Bros"
 _rom_filename=""
 _pkg=super-mario-bros
@@ -52,7 +63,8 @@ arch=(
 )
 url="https://en.wikipedia.org/wiki/${_title}"
 depends=(
-  "${_nes_emulator}"
+  "${_emulators[@]}"
+  "videogame-launcher"
 )
 makedepends=()
 _archive="https://archive.org"
@@ -67,15 +79,15 @@ _wikimedia_namespace="wikipedia/en"
 _network=100 # gnosis
 _file_system="0x69470b18f8b8b5f92b48f6199dcb147b4be96571" # default file system deployment
 _namespace="0x926acb6aA4790ff678848A9F1C59E578B148C786" # that kid address
-_rom_hash="684feefca60a36aa4d1a455ab8db17d8ecf1bb840fc92505f7ed6e6d5357c46b"
-_pic_hash="2b7b72fe313c3c544c58d718b9f8f9abea957091c0070ba233234c7e4d0f0a95"
-_evmfs_rom_uri="evmfs://${_network}/${_file_system}/${_namespace}/${_rom_hash}"
-_evmfs_pic_uri="evmfs://${_network}/${_file_system}/${_namespace}/${_pic_hash}"
+_evmfs_rom_sum="684feefca60a36aa4d1a455ab8db17d8ecf1bb840fc92505f7ed6e6d5357c46b"
+_pic_sum="2b7b72fe313c3c544c58d718b9f8f9abea957091c0070ba233234c7e4d0f0a95"
+_evmfs_rom_uri="evmfs://${_network}/${_file_system}/${_namespace}/${_evmfs_rom_sum}"
+_evmfs_pic_uri="evmfs://${_network}/${_file_system}/${_namespace}/${_pic_sum}"
 source=(
   "nes-template.desktop"
 )
 sha256sums=(
-  "e021676ce1a72920536fad3733b4d5beb703f27da88f3418a517c675f0572a24"
+  "593e726db737390c7cd41e28a570d2ab19a3383d9ae163171a1afc14acaa6019"
 )
 if [[ "${_archive}" == "true" ]]; then
   _rom="${_app_id}.nes::${_archive_rom_uri}"
@@ -84,6 +96,7 @@ if [[ "${_archive}" == "true" ]]; then
   # this and they have to delete the previous version.
   # So you know, another reason to use the evmfs as default.
   _pic_uri="${_wikimedia}/${_namespace}/0/03/Super_Mario_Bros._box.png"
+  _dl_agent="true"
 elif [[ "${_evmfs}" == "true" ]]; then
   makedepends+=(
     "evmfs"
@@ -101,7 +114,7 @@ elif [[ "${_evmfs}" == "true" ]]; then
     _dl_agent="false"
   fi
   _rom="${_app_id}.nes.zpaq::${_evmfs_rom_uri}"
-  _rom_sum="${_rom_hash}"
+  _rom_sum="${_evmfs_rom_sum}"
   _pic_uri="${_evmfs_pic_uri}"
 fi
 if [[ "${_dl_agent}" == "true" ]]; then
@@ -111,52 +124,15 @@ if [[ "${_dl_agent}" == "true" ]]; then
   )
   sha256sums+=(
     "${_rom_sum}"
-    "${_pic_hash}"
+    "${_pic_sum}"
   )
 fi
 
-prepare() {
-  local \
-    _sum \
-    _download
-  _download="false"
-  if [[ "${_dl_agent}" == "false" ]]; then
-    if [[ ! -e "${_app_id}.nes.zpaq" ]]; then
-      _download="true"
-    else
-      _sum="$( \
-        sha256sum \
-          "${_app_id}.nes.zpaq" | \
-          awk \
-            '{print $1}')"
-      msg "${_sum}"
-      if [[ "${_sum}" != "${_rom_sum}" ]]; then
-        _download="true"
-      fi
-    fi
-  fi
-  if [[ "${_download}" == "true" ]]; then
-    evmfs \
-      -v \
-      -o \
-        "${srcdir}/${_app_id}.nes.zpaq" \
-      get \
-        "${_evmfs_rom_uri}"
-    evmfs \
-      -v \
-      -o \
-        "${srcdir}/${_app_id}.png" \
-      get \
-        "${_pic_uri}"
-  fi
-  if [[ ! -e "${_app_id}.nes" ]]; then
-    lrunzip \
-      -z \
-      --outfile "${_app_id}.nes" -- \
-      "${_app_id}.nes.zpaq"
-  fi
+_desktop_file_prepare() {
+  msg \
+    "preparing desktop file"
   mv \
-    nes-template.desktop \
+    "nes-template.desktop" \
     "${_app_id}.desktop"
   sed \
     -i \
@@ -164,19 +140,115 @@ prepare() {
     "${_app_id}.desktop"
   sed \
     -i \
-    "s/%pkgdesc%/${pkgdesc}/g" \
+    "s/%_pkgdesc%/${pkgdesc}/g" \
     "${_app_id}.desktop"
   sed \
     -i \
     "s/%_app_id%/${_app_id}/g" \
     "${_app_id}.desktop"
   sed \
-    -i \
-    "s/%_uuid%/${_uuid}/g" \
+    -i "s/%_uuid%/${_uuid}/g" \
     "${_app_id}.desktop"
+  sed \
+    -i \
+    "s/%_game_launcher%/${_emulator}/g" \
+    "${_app_id}.desktop"
+  sed \
+    -i \
+    "s/%_game_language%/any/g" \
+    "${_app_id}.desktop"
+  msg \
+    "done"
+}
+
+_usr_get() {
+  local \
+    _bin
+  _bin="$( \
+    dirname \
+      "$(command \
+           -v \
+	   "env")")"
+  dirname \
+    "${_bin}"
+}
+
+_evmfs_get() {
+  local \
+    _file="${1}" \
+    _sum="${2}" \
+    _uri="${3}" \
+    _download \
+    _checksum_flag
+  _download="false"
+  if [[ ! -e "${_file}" ]]; then
+    _msg=(
+      "file '${_file}'"
+      "not found, downloading."
+    )
+    msg \
+      "${_msg[*]}"
+    _download="true"
+  else
+    _file_checksum \
+      "${_file}" \
+      "${_sum}"
+    if [[ "${_checksum_flag}" == "false" ]]; then
+      _download="true"
+    fi
+  fi
+  if [[ "${_download}" == "true" ]]; then
+    msg \
+      "downloading file from evmfs"
+    evmfs \
+      -v \
+      -o \
+        "${_file}" \
+      get \
+        "${_uri}"
+  fi
+}
+
+_rom_extract() {
+  lrunzip \
+    -z \
+    --outfile "${_app_id}.nes" -- \
+    "${_app_id}.nes.zpaq"
+}
+
+prepare() {
+  local \
+    _sum \
+    _download \
+    _extract
+  _download="false"
+  _extract="false"
+  if [[ "${_dl_agent}" == "false" ]]; then
+    _evmfs_get \
+      "${_app_id}.nes.zpaq" \
+      "${_rom_sum}" \
+      "${_evmfs_rom_uri}"
+    _evmfs_get \
+      "${_app_id}.png" \
+      "${_pic_sum}" \
+      "${_evmfs_pic_uri}"
+  fi
+  if [[ ! -e "${_app_id}.nes" ]]; then
+    _extract="true"
+  fi
+  if [[ "${_extract}" == "true" ]]; then
+    _rom_extract
+  fi
+  _desktop_file_prepare
 }
 
 package() {
+  local \
+    _game
+  _game="${pkgdir}/usr/games/${_app_id}"
+  echo \
+    "$(_usr_get)/games/${_app_id}/${_uuid}.bin" > \
+    "${_game}/any"
   install \
     -Dm755 \
     "${_app_id}.desktop" \
@@ -184,7 +256,7 @@ package() {
   install \
     -Dm644 \
     "${_app_id}.png" \
-    "${pkgdir}/usr/share/icons/${_app_id}.png"
+    "${pkgdir}/usr/share/icons/${_app_id}-${_uuid}.png"
   install \
     -Dm644 \
     "${_app_id}.nes" \
