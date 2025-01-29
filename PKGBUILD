@@ -259,26 +259,26 @@ package() {
   local \
     _game_dir \
     _rom_dir
-  _game_dir="${pkgdir}/usr/games/${_app_id}"
+  _game_dir="$(_usr_get)/games/${_app_id}"
   install \
     -vdm755 \
-    "${_game_dir}"
+    "${pkgdir}${_game_dir}"
   if [[ "${_os}" == "GNU/Linux" ]]; then
     _rom_dir="${_game_dir}"
   elif [[ "${_os}" == "Android" ]]; then
     _rom_dir="/storage/emulated/0/Android/media/${_app_id}"
     ln \
       -s \
-      "${_rom_dir}/${_app_id}.nes" \
-      "${_game_dir}/${_app_id}.nes"
+      "${_rom_dir}/${_uuid}.nes" \
+      "${pkgdir}${_game_dir}/${_uuid}.nes"
   fi
   install \
     -vDm644 \
     "${_app_id}.nes" \
-    "${_rom_dir}/${_app_id}.nes"
+    "${pkgdir}${_rom_dir}/${_uuid}.nes"
   echo \
-    "$(_usr_get)/games/${_app_id}/${_uuid}.bin" > \
-    "${_game_dir}/any"
+    "${_rom_dir}/${_uuid}.nes" > \
+    "${pkgdir}${_game_dir}/any"
   install \
     -vDm755 \
     "${_app_id}.desktop" \
@@ -293,7 +293,6 @@ package() {
       "android-launcher" \
       "${pkgdir}/usr/bin/super-mario-bros"
   fi
-
 }
 
 # vim:set sw=2 sts=-1 et:
