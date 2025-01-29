@@ -258,11 +258,14 @@ prepare() {
 package() {
   local \
     _game_dir \
-    _rom_path
+    _rom_dir
   _game_dir="${pkgdir}/usr/games/${_app_id}"
+  install \
+    -vdm755 \
+    "${_game_dir}"
   if [[ "${_os}" == "GNU/Linux" ]]; then
     _rom_dir="${_game_dir}"
-  elif [[ "${_os}" == "GNU/Linux" ]]; then
+  elif [[ "${_os}" == "Android" ]]; then
     _rom_dir="${pkgdir}/home/storage/shared/Android/media/${_app_id}"
     ln \
       -s \
@@ -270,23 +273,23 @@ package() {
       "${_game_dir}/${_app_id}.nes"
   fi
   install \
-    -Dm644 \
+    -vDm644 \
     "${_app_id}.nes" \
     "${_rom_dir}/${_app_id}.nes"
   echo \
     "$(_usr_get)/games/${_app_id}/${_uuid}.bin" > \
     "${_game_dir}/any"
   install \
-    -Dm755 \
+    -vDm755 \
     "${_app_id}.desktop" \
     "${pkgdir}/usr/share/applications/${_app_id}.desktop"
   install \
-    -Dm644 \
+    -vDm644 \
     "${_app_id}.png" \
     "${pkgdir}/usr/share/icons/${_app_id}-${_uuid}.png"
   if [[ "${_os}" == "Android" ]]; then
     install \
-      -Dm755 \
+      -vDm755 \
       "android-launcher" \
       "${pkgdir}/usr/bin/super-mario-bros"
   fi
