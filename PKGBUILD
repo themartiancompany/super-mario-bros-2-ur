@@ -259,7 +259,7 @@ package() {
   local \
     _game_dir \
     _rom_dir
-  _game_dir="$(_usr_get)/games/${_app_id}"
+  _game_dir="/usr/games/${_app_id}"
   install \
     -vdm755 \
     "${pkgdir}${_game_dir}"
