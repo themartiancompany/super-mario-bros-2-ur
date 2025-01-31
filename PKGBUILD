@@ -185,6 +185,39 @@ _usr_get() {
     "${_bin}"
 }
 
+_file_checksum() {
+  local \
+    _file="${1}" \
+    _sum_correct="${2}" \
+    _sum
+  _checksum_flag="false"
+  _sum="$( \
+    sha256sum \
+      "${_file}" | \
+        awk \
+          '{print $1}')"
+  msg \
+    "local file '${_file}' sum: '${_sum}'"
+  if [[ "${_sum}" == "${_sum_correct}" ]]; then
+    _msg=(
+      "local file '$( \
+        realpath \
+          "${_evmfs_rom_bin_archive_filename}")'"
+      "has correct sum."
+    )
+    msg \
+      "${_msg[*]}"
+    _checksum_flag="true"
+  elif [[ "${_sum}" != "${_rom_sum}" ]]; then
+    _msg=(
+      "local file '${_file}' sum: '${_sum}'"
+      "different from expected '${_rom_sum}'."
+    )
+    msg \
+      "${_msg[*]}"
+  fi
+}
+
 _evmfs_get() {
   local \
     _file="${1}" \
