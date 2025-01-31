@@ -4,7 +4,7 @@ videogame-launcher \
   -e \
     "%_game_launcher%" \
   -l \
-    "%_game_lang%"
+    "%_game_language%" \
   -p \
-    "nes" \
+    "%_game_platform%" \
   "%_app_id%"
