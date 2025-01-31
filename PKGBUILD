@@ -328,7 +328,7 @@ package() {
     "${pkgdir}${_game_dir}"
   if [[ "${_os}" == "GNU/Linux" ]]; then
     _rom_dir="${_game_dir}"
-    _rom_install_dir="${pkgdir}${_rom_dir}/${_uuid}.nes"
+    _rom_install_dir="${pkgdir}${_rom_dir}"
   elif [[ "${_os}" == "Android" ]]; then
     _rom_dir="/storage/emulated/0/Android/media/${_app_id}"
     _rom_install_dir="$( \
