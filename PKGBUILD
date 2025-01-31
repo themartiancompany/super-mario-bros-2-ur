@@ -173,6 +173,32 @@ _desktop_file_prepare() {
     "done"
 }
 
+_launcher_prepare() {
+  msg \
+    "preparing desktop file"
+  mv \
+    "launcher" \
+    "${pkgname}"
+  sed \
+    -i \
+    "s/%_app_id%/${_app_id}/g" \
+    "${pkgname}"
+  sed \
+    -i \
+    "s/%_uuid%/${_uuid}/g" \
+    "${pkgname}"
+  sed \
+    -i \
+    "s/%_game_launcher%/${_emulator}/g" \
+    "${pkgname}"
+  sed \
+    -i \
+    "s/%_game_language%/any/g" \
+    "${pkgname}"
+  msg \
+    "done"
+}
+
 _usr_get() {
   local \
     _bin
@@ -285,6 +311,7 @@ prepare() {
     _rom_extract
   fi
   _desktop_file_prepare
+  _launcher_prepare
 }
 
 _pkgdir_get() {

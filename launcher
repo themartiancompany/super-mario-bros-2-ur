@@ -2,7 +2,9 @@
 
 videogame-launcher \
   -e \
-    "retroarch" \
+    "%_game_launcher%" \
+  -l \
+    "%_game_lang%"
   -p \
     "nes" \
   "com.nintendo.SuperMarioBros"
