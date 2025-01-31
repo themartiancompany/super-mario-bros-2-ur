@@ -369,8 +369,8 @@ package() {
   fi
   install \
     -vDm755 \
-    "launcher" \
-    "${pkgdir}/usr/bin/super-mario-bros"
+    "${pkgname}" \
+    "${pkgdir}/usr/bin/${pkgname}"
 }
 
 # vim:set sw=2 sts=-1 et:
