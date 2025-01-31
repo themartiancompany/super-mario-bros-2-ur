@@ -99,7 +99,7 @@ source=(
 )
 sha256sums=(
   "593e726db737390c7cd41e28a570d2ab19a3383d9ae163171a1afc14acaa6019"
-  "2f45ce7058e165ef755e956e713f5e86814bccce7937138bb214230be31a62cf"
+  "fe59c79d0f57efe13cd3b05e0aa034250b6a965fa8f38a984f69405afeee1cf4"
 )
 if [[ "${_archive}" == "true" ]]; then
   _rom="${_app_id}.nes::${_archive_rom_uri}"
@@ -182,10 +182,6 @@ _launcher_prepare() {
   sed \
     -i \
     "s/%_app_id%/${_app_id}/g" \
-    "${pkgname}"
-  sed \
-    -i \
-    "s/%_uuid%/${_uuid}/g" \
     "${pkgname}"
   sed \
     -i \

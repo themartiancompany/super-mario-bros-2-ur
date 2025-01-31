@@ -7,4 +7,4 @@ videogame-launcher \
     "%_game_lang%"
   -p \
     "nes" \
-  "com.nintendo.SuperMarioBros"
+  "%_app_id%"
