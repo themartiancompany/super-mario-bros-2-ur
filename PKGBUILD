@@ -72,6 +72,11 @@ if [[ "${_retroarch}" == "true" ]]; then
   )
 fi
 makedepends=()
+if [[ "${_os}" == "Android" ]]; then
+  makedepends+=(
+    "termux-shortcuts-utils"
+  )
+fi
 _archive="https://archive.org"
 _wikimedia="https://upload.wikimedia.org"
 license=(
@@ -96,7 +101,7 @@ sha256sums=(
 )
 if [[ "${_os}" == "Android" ]]; then
   source+=(
-    "android-launcher"
+    "launcher"
   )
   sha256sums+=(
     "2f45ce7058e165ef755e956e713f5e86814bccce7937138bb214230be31a62cf"
@@ -300,11 +305,19 @@ package() {
     "${_app_id}.png" \
     "${pkgdir}/usr/share/icons/${_app_id}-${_uuid}.png"
   if [[ "${_os}" == "Android" ]]; then
+    termux-shortcut-new \
+      -o \
+        "${pkgdir}/home/.shortcuts" \
+      "${_app_id}.desktop"
     install \
-      -vDm755 \
-      "android-launcher" \
-      "${pkgdir}/usr/bin/super-mario-bros"
+      -vDm644 \
+      "${_app_id}.png" \
+      "${pkgdir}/home/.shortcuts/icons/${_title}.png"
   fi
+  install \
+    -vDm755 \
+    "launcher" \
+    "${pkgdir}/usr/bin/super-mario-bros"
 }
 
 # vim:set sw=2 sts=-1 et:
