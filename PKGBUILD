@@ -299,6 +299,9 @@ package() {
     "${_app_id}.png" \
     "${pkgdir}/usr/share/icons/${_app_id}-${_uuid}.png"
   if [[ "${_os}" == "Android" ]]; then
+    install \
+      -vdm755 \
+      "${pkgdir}/home/.shortcuts"
     termux-shortcut-new \
       -o \
         "${pkgdir}/home/.shortcuts" \
