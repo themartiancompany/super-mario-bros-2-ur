@@ -228,7 +228,7 @@ _file_checksum() {
     _msg=(
       "local file '$( \
         realpath \
-          "${_evmfs_rom_bin_archive_filename}")'"
+          "${_file}")'"
       "has correct sum."
     )
     msg \
