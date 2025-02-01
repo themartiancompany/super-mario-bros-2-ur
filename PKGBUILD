@@ -175,7 +175,7 @@ _desktop_file_prepare() {
 
 _launcher_prepare() {
   msg \
-    "preparing desktop file"
+    "preparing command-line launcher"
   mv \
     "launcher" \
     "${pkgname}"
