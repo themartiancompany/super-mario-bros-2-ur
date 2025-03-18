@@ -107,7 +107,7 @@ if [[ "${_archive}" == "true" ]]; then
   # This one could change actually because Wikipedia users can update
   # this and they have to delete the previous version.
   # So you know, another reason to use the evmfs as default.
-  _pic_uri="${_wikimedia}/${_namespace}/0/03/Super_Mario_Bros._box.png"
+  _pic_uri="${_wikimedia}/${_wikimedia_namespace}/0/03/Super_Mario_Bros._box.png"
   _dl_agent="true"
 elif [[ "${_evmfs}" == "true" ]]; then
   makedepends+=(
