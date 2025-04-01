@@ -20,12 +20,28 @@
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # Maintainer: Truocolo <truocolo@aol.com>
-# Maintainer: Pellegrino Prevete (tallero) <pellegrinoprevete@gmail.com>
+# Maintainer: Truocolo <truocolo@0x6E5163fC4BFc1511Dbe06bB605cc14a3e462332b>
+# Maintainer: Pellegrino Prevete (dvorak) <pellegrinoprevete@gmail.com>
+# Maintainer: Pellegrino Prevete (dvorak) <dvorak@0x87003Bd6C074C713783df04f36517451fF34CBEf>
 
 _os="$( \
   uname \
     -o)"
-_dl_agent="true"
+_evmfs_available="$( \
+  command \
+    -v \
+    "evmfs" || \
+    true)"
+if [[ ! -v "_evmfs" ]]; then
+  if [[ "${_evmfs_available}" != "" ]]; then
+    _evmfs="true"
+  elif [[ "${_evmfs_available}" == "" ]]; then
+    _evmfs="false"
+  fi
+fi
+if [[ ! -v "_dl_agent" ]]; then
+  _dl_agent="true"
+fi
 _zpaq_archiver="lrzip"
 _retroarch="false"
 _fceux="true"
@@ -43,7 +59,6 @@ elif [[ "${_os}" == "GNU/Linux" ]]; then
   )
 fi
 _archive="false"
-_evmfs="true"
 _app_id="com.nintendo.SuperMarioBros"
 _uuid="NES-NROM-256-01"
 _title="Super Mario Bros"
