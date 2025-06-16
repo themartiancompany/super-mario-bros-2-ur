@@ -109,6 +109,9 @@ _archive_rom_url="${_archive}${_archive_namespace}/Super%20Mario%20Bros.%20%28Wo
 _wikimedia_namespace="wikipedia/en"
 # that kid address
 _namespace="0x926acb6aA4790ff678848A9F1C59E578B148C786"
+# dogechain
+_network=2000
+_file_system="0xDebB1F4A3dD682BD131ba90aA45aC4735FbaF9D0"
 # binance smart chain
 _network=56
 # polygon
