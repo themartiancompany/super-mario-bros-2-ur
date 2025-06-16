@@ -109,13 +109,12 @@ _archive_rom_url="${_archive}${_archive_namespace}/Super%20Mario%20Bros.%20%28Wo
 _wikimedia_namespace="wikipedia/en"
 # that kid address
 _namespace="0x926acb6aA4790ff678848A9F1C59E578B148C786"
-# gnosis
-_network=100
-# default file system deployment
-_file_system="0x69470b18f8b8b5f92b48f6199dcb147b4be96571"
 # binance smart chain
 _network=56
 _file_system="0x7D55E8B250DC2393255d62db57C4C8bF7BCf23ec"
+# gnosis
+_network=100
+_file_system="0x69470b18f8b8b5f92b48f6199dcb147b4be96571"
 _evmfs_rom_sum="684feefca60a36aa4d1a455ab8db17d8ecf1bb840fc92505f7ed6e6d5357c46b"
 _pic_sum="2b7b72fe313c3c544c58d718b9f8f9abea957091c0070ba233234c7e4d0f0a95"
 _evmfs_rom_uri="evmfs://${_network}/${_file_system}/${_namespace}/${_evmfs_rom_sum}"
