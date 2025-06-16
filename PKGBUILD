@@ -19,10 +19,14 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Maintainer: Truocolo <truocolo@aol.com>
-# Maintainer: Truocolo <truocolo@0x6E5163fC4BFc1511Dbe06bB605cc14a3e462332b>
-# Maintainer: Pellegrino Prevete (dvorak) <pellegrinoprevete@gmail.com>
-# Maintainer: Pellegrino Prevete (dvorak) <dvorak@0x87003Bd6C074C713783df04f36517451fF34CBEf>
+# Maintainer:
+#   Truocolo
+#     <truocolo@aol.com>
+#     <truocolo@0x6E5163fC4BFc1511Dbe06bB605cc14a3e462332b>
+# Maintainer:
+#   Pellegrino Prevete (dvorak)
+#     <pellegrinoprevete@gmail.com>
+#     <dvorak@0x87003Bd6C074C713783df04f36517451fF34CBEf>
 
 _os="$( \
   uname \
@@ -68,9 +72,11 @@ pkgname="${_pkg}"
 pkgver=1.0
 pkgrel=1
 _pkgdesc=(
-  "Platform game developed and published in 1985 by Nintendo"
-  "for the Famicom in Japan and for the Nintendo Entertainment"
-  "System (NES) in North America"
+  "Platform game developed and"
+  "published in 1985 by Nintendo"
+  "for the Famicom in Japan and"
+  "for the Nintendo Entertainment"
+  "System (NES) in North America."
 )
 pkgdesc="${_pkgdesc[*]}"
 arch=(
@@ -101,9 +107,15 @@ _dmca_exemption="${_archive}/about/dmca.php"
 _archive_namespace="download/nes-roms"
 _archive_rom_url="${_archive}${_archive_namespace}/Super%20Mario%20Bros.%20%28World%29.nes"
 _wikimedia_namespace="wikipedia/en"
-_network=100 # gnosis
-_file_system="0x69470b18f8b8b5f92b48f6199dcb147b4be96571" # default file system deployment
-_namespace="0x926acb6aA4790ff678848A9F1C59E578B148C786" # that kid address
+# that kid address
+_namespace="0x926acb6aA4790ff678848A9F1C59E578B148C786"
+# gnosis
+_network=100
+# default file system deployment
+_file_system="0x69470b18f8b8b5f92b48f6199dcb147b4be96571"
+# binance smart chain
+_network=56
+_file_system="0x7D55E8B250DC2393255d62db57C4C8bF7BCf23ec"
 _evmfs_rom_sum="684feefca60a36aa4d1a455ab8db17d8ecf1bb840fc92505f7ed6e6d5357c46b"
 _pic_sum="2b7b72fe313c3c544c58d718b9f8f9abea957091c0070ba233234c7e4d0f0a95"
 _evmfs_rom_uri="evmfs://${_network}/${_file_system}/${_namespace}/${_evmfs_rom_sum}"
@@ -134,7 +146,7 @@ elif [[ "${_evmfs}" == "true" ]]; then
       "no download agent configured to manage"
       "Ethereum Virtual Machine File System"
       "resources (evmfs://<uri>). The download"
-      "will happen in the 'prepare' function"
+      "will happen in the 'prepare' function."
     )
     msg \
       "${_msg[*]}"
@@ -190,7 +202,7 @@ _desktop_file_prepare() {
 
 _launcher_prepare() {
   msg \
-    "preparing command-line launcher"
+    "Preparing command-line launcher."
   mv \
     "launcher" \
     "${pkgname}"
@@ -211,7 +223,7 @@ _launcher_prepare() {
     "s/%_game_platform%/nes/g" \
     "${pkgname}"
   msg \
-    "done"
+    "Done."
 }
 
 _usr_get() {
