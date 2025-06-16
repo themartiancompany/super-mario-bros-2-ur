@@ -111,6 +111,8 @@ _wikimedia_namespace="wikipedia/en"
 _namespace="0x926acb6aA4790ff678848A9F1C59E578B148C786"
 # binance smart chain
 _network=56
+# polygon
+_network="137"
 _file_system="0x7D55E8B250DC2393255d62db57C4C8bF7BCf23ec"
 # gnosis
 _network=100
