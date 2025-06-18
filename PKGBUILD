@@ -159,6 +159,8 @@ _network=100
 # File system addresses
 _fs=(
   ["17000"]="0x151920938488F193735e83e052368cD41F9d9362"
+  ["1315"]="0x151920938488F193735e83e052368cD41F9d9362"
+  ["7001"]="0x7D55E8B250DC2393255d62db57C4C8bF7BCf23ec"
   ["2000"]="0xDebB1F4A3dD682BD131ba90aA45aC4735FbaF9D0"
   ["321"]="0x78BF4B05035BDBEeE1C2048920e85bBA424be188"
   ["137"]="0x7D55E8B250DC2393255d62db57C4C8bF7BCf23ec"
@@ -220,7 +222,7 @@ fi
 
 _desktop_file_prepare() {
   msg \
-    "preparing desktop file"
+    "Preparing desktop file."
   mv \
     "nes-template.desktop" \
     "${_app_id}.desktop"
@@ -300,11 +302,14 @@ _file_checksum() {
       "${_file}" | \
         awk \
           '{print $1}')"
+  _msg=(
+    "Local file '${_file}' sum: '${_sum}'"
+  )
   msg \
-    "local file '${_file}' sum: '${_sum}'"
+    "${_msg[*]}"
   if [[ "${_sum}" == "${_sum_correct}" ]]; then
     _msg=(
-      "local file '$( \
+      "Local file '$( \
         realpath \
           "${_file}")'"
       "has correct sum."
@@ -314,7 +319,7 @@ _file_checksum() {
     _checksum_flag="true"
   elif [[ "${_sum}" != "${_rom_sum}" ]]; then
     _msg=(
-      "local file '${_file}' sum: '${_sum}'"
+      "Local file '${_file}' sum: '${_sum}'"
       "different from expected '${_rom_sum}'."
     )
     msg \
@@ -332,7 +337,7 @@ _evmfs_get() {
   _download="false"
   if [[ ! -e "${_file}" ]]; then
     _msg=(
-      "file '${_file}'"
+      "File '${_file}'"
       "not found, downloading."
     )
     msg \
@@ -347,8 +352,12 @@ _evmfs_get() {
     fi
   fi
   if [[ "${_download}" == "true" ]]; then
+    _msg=(
+      "Downloading file '${_file}' from EVMFS"
+      "uri '${_uri}'."
+    )
     msg \
-      "downloading file from evmfs"
+      "${_msg[*]}"
     evmfs \
       -v \
       -o \
