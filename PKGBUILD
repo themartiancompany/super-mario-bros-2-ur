@@ -31,11 +31,13 @@
 _os="$( \
   uname \
     -o)"
+
 _evmfs_available="$( \
   command \
     -v \
     "evmfs" || \
     true)"
+
 if [[ ! -v "_evmfs" ]]; then
   if [[ "${_evmfs_available}" != "" ]]; then
     _evmfs="true"
@@ -43,26 +45,42 @@ if [[ ! -v "_evmfs" ]]; then
     _evmfs="false"
   fi
 fi
+if [[ "${_evmfs}" == "true" ]]; then
+  _archive="false"
+elif [[ "${_evmfs}" == "true" ]]; then
+  _archive="true"
+fi
 if [[ ! -v "_dl_agent" ]]; then
   _dl_agent="true"
 fi
+if [[ ! -v "_retroarch" ]]; then
+  if [[ "${_os}" == "Android" ]]; then
+    _retroarch="true"
+  elif [[ "${_os}" == "GNU/Linux" ]]; then
+    _retroarch="false"
+  fi
+fi
+if [[ ! -v "_fceux" ]]; then
+  if [[ "${_os}" == "Android" ]]; then
+    _fceux="false"
+  elif [[ "${_os}" == "GNU/Linux" ]]; then
+    _fceux="true"
+  fi
+fi
 _zpaq_archiver="lrzip"
-_retroarch="false"
-_fceux="true"
 _emulators=()
-if [[ "${_os}" == "Android" ]]; then
+if [[ "${_retroarch}" == "true" ]]; then
   _emulator="retroarch"
-  _retroarch="true"
   _emulators+=(
     "${_emulator}"
   )
-elif [[ "${_os}" == "GNU/Linux" ]]; then
+fi
+if [[ "${_fceux}" == "true" ]]; then
   _emulator="fceux"
   _emulators+=(
     "${_emulator}"
   )
 fi
-_archive="false"
 _app_id="com.nintendo.SuperMarioBros"
 _uuid="NES-NROM-256-01"
 _title="Super Mario Bros"
@@ -107,26 +125,52 @@ _dmca_exemption="${_archive}/about/dmca.php"
 _archive_namespace="download/nes-roms"
 _archive_rom_url="${_archive}${_archive_namespace}/Super%20Mario%20Bros.%20%28World%29.nes"
 _wikimedia_namespace="wikipedia/en"
+
+# EVMFS configuration
+
 # that kid address
 _namespace="0x926acb6aA4790ff678848A9F1C59E578B148C786"
-# dogechain
-_network=2000
-_file_system="0xDebB1F4A3dD682BD131ba90aA45aC4735FbaF9D0"
-# kucoin community chain
-_network=321
-_file_system="0x78BF4B05035BDBEeE1C2048920e85bBA424be188"
-# polygon
-_network="137"
-# binance smart chain
-_network=56
-_file_system="0x7D55E8B250DC2393255d62db57C4C8bF7BCf23ec"
-# gnosis
-_network=100
-_file_system="0x69470b18f8b8b5f92b48f6199dcb147b4be96571"
+
 _evmfs_rom_sum="684feefca60a36aa4d1a455ab8db17d8ecf1bb840fc92505f7ed6e6d5357c46b"
 _pic_sum="2b7b72fe313c3c544c58d718b9f8f9abea957091c0070ba233234c7e4d0f0a95"
+
+# testnets
+
+#   holesky
+_network=17000
+
+# mainnets
+
+#   dogechain
+_network=2000
+
+# kucoin community chain
+_network=321
+
+# polygon
+_network="137"
+
+# binance smart chain
+_network=56
+
+# gnosis
+_network=100
+
+# File system addresses
+_fs=(
+  ["17000"]="0x151920938488F193735e83e052368cD41F9d9362"
+  ["2000"]="0xDebB1F4A3dD682BD131ba90aA45aC4735FbaF9D0"
+  ["321"]="0x78BF4B05035BDBEeE1C2048920e85bBA424be188"
+  ["137"]="0x7D55E8B250DC2393255d62db57C4C8bF7BCf23ec"
+  ["56"]="0x7D55E8B250DC2393255d62db57C4C8bF7BCf23ec"
+  ["100"]="0x69470b18f8b8b5f92b48f6199dcb147b4be96571"
+)
+
+_file_system="${_fs["${_network}"]}"
+
 _evmfs_rom_uri="evmfs://${_network}/${_file_system}/${_namespace}/${_evmfs_rom_sum}"
 _evmfs_pic_uri="evmfs://${_network}/${_file_system}/${_namespace}/${_pic_sum}"
+
 source=(
   "nes-template.desktop"
   "launcher"
@@ -150,7 +194,7 @@ elif [[ "${_evmfs}" == "true" ]]; then
   )
   if [[ ! " ${DLAGENTS[*]} " == *" evmfs::"* ]]; then
     _msg=(
-      "no download agent configured to manage"
+      "No download agent configured to manage"
       "Ethereum Virtual Machine File System"
       "resources (evmfs://<uri>). The download"
       "will happen in the 'prepare' function."
