@@ -112,10 +112,13 @@ _namespace="0x926acb6aA4790ff678848A9F1C59E578B148C786"
 # dogechain
 _network=2000
 _file_system="0xDebB1F4A3dD682BD131ba90aA45aC4735FbaF9D0"
-# binance smart chain
-_network=56
+# kucoin community chain
+_network=321
+_file_system="0x78BF4B05035BDBEeE1C2048920e85bBA424be188"
 # polygon
 _network="137"
+# binance smart chain
+_network=56
 _file_system="0x7D55E8B250DC2393255d62db57C4C8bF7BCf23ec"
 # gnosis
 _network=100
