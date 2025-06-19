@@ -123,51 +123,44 @@ _dmca_exemption="${_archive}/about/dmca.php"
 _archive_namespace="download/nes-roms"
 _archive_rom_url="${_archive}${_archive_namespace}/Super%20Mario%20Bros.%20%28World%29.nes"
 _wikimedia_namespace="wikipedia/en"
-
 # EVMFS configuration
-
 # that kid address
 _namespace="0x926acb6aA4790ff678848A9F1C59E578B148C786"
-
 _evmfs_rom_sum="684feefca60a36aa4d1a455ab8db17d8ecf1bb840fc92505f7ed6e6d5357c46b"
 _pic_sum="2b7b72fe313c3c544c58d718b9f8f9abea957091c0070ba233234c7e4d0f0a95"
-
 # testnets
-
-#   holesky
+# holesky
 _network=17000
-
+# aeneid
+_network=1315
+# zetachain
+_network=7001
+# chiado
+_network=10200
 # mainnets
-
-#   dogechain
+# dogechain
 _network=2000
-
 # kucoin community chain
 _network=321
-
 # polygon
 _network="137"
-
 # binance smart chain
 _network=56
-
 # gnosis
 _network=100
-
 # File system addresses
 _fs=(
   ["17000"]="0x151920938488F193735e83e052368cD41F9d9362"
   ["1315"]="0x151920938488F193735e83e052368cD41F9d9362"
   ["7001"]="0x7D55E8B250DC2393255d62db57C4C8bF7BCf23ec"
+  ["10200"]="0x7D55E8B250DC2393255d62db57C4C8bF7BCf23ec"
   ["2000"]="0xDebB1F4A3dD682BD131ba90aA45aC4735FbaF9D0"
   ["321"]="0x78BF4B05035BDBEeE1C2048920e85bBA424be188"
   ["137"]="0x7D55E8B250DC2393255d62db57C4C8bF7BCf23ec"
   ["56"]="0x7D55E8B250DC2393255d62db57C4C8bF7BCf23ec"
   ["100"]="0x69470b18f8b8b5f92b48f6199dcb147b4be96571"
 )
-
 _file_system="${_fs["${_network}"]}"
-
 _evmfs_rom_uri="evmfs://${_network}/${_file_system}/${_namespace}/${_evmfs_rom_sum}"
 _evmfs_pic_uri="evmfs://${_network}/${_file_system}/${_namespace}/${_pic_sum}"
 source=(
