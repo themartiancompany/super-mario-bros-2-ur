@@ -127,6 +127,7 @@ _wikimedia_namespace="wikipedia/en"
 # that kid address
 _namespace="0x926acb6aA4790ff678848A9F1C59E578B148C786"
 _evmfs_rom_sum="684feefca60a36aa4d1a455ab8db17d8ecf1bb840fc92505f7ed6e6d5357c46b"
+_evmfs_rom_sig_sum="7871474a3ad49f033d880fa78b0b5771b15df71a47b29bc3d63167aed3478890"
 _pic_sum="2b7b72fe313c3c544c58d718b9f8f9abea957091c0070ba233234c7e4d0f0a95"
 # testnets
 # holesky
@@ -137,6 +138,8 @@ _network=1315
 _network=7001
 # chiado
 _network=10200
+# sepolia
+_network=11155111
 # mainnets
 # dogechain
 _network=2000
@@ -154,6 +157,7 @@ _fs=(
   ["1315"]="0x151920938488F193735e83e052368cD41F9d9362"
   ["7001"]="0x7D55E8B250DC2393255d62db57C4C8bF7BCf23ec"
   ["10200"]="0x7D55E8B250DC2393255d62db57C4C8bF7BCf23ec"
+  ["11155111"]="0x151920938488F193735e83e052368cD41F9d9362"
   ["2000"]="0xDebB1F4A3dD682BD131ba90aA45aC4735FbaF9D0"
   ["321"]="0x78BF4B05035BDBEeE1C2048920e85bBA424be188"
   ["137"]="0x7D55E8B250DC2393255d62db57C4C8bF7BCf23ec"
