@@ -130,31 +130,35 @@ _evmfs_rom_sum="684feefca60a36aa4d1a455ab8db17d8ecf1bb840fc92505f7ed6e6d5357c46b
 _evmfs_rom_sig_sum="7871474a3ad49f033d880fa78b0b5771b15df71a47b29bc3d63167aed3478890"
 _pic_sum="2b7b72fe313c3c544c58d718b9f8f9abea957091c0070ba233234c7e4d0f0a95"
 # testnets
+# gensyn
+_network="685685"
+# lens
+_network="37111"
 # monad
 _network="10143"
 # polygon amoy
-_network=80002
+_network="80002"
 # holesky
-_network=17000
+_network="17000"
 # aeneid
-_network=1315
+_network="1315"
 # zetachain
-_network=7001
+_network="7001"
 # chiado
-_network=10200
+_network="10200"
 # sepolia
-_network=11155111
+_network="11155111"
 # mainnets
 # dogechain
-_network=2000
+_network="2000"
 # kucoin community chain
-_network=321
+_network="321"
 # polygon
 _network="137"
 # binance smart chain
-_network=56
+_network="56"
 # gnosis
-_network=100
+_network="100"
 # File system addresses
 _fs=(
   ["685685"]="0x7D55E8B250DC2393255d62db57C4C8bF7BCf23ec"
