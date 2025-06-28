@@ -194,7 +194,7 @@ _pic_file_system="${_fs["${_pic_network}"]}"
 _sig_file_system="${_fs["${_sig_network}"]}"
 _evmfs_rom_uri="evmfs://${_network}/${_file_system}/${_namespace}/${_evmfs_rom_sum}"
 _evmfs_rom_sig_uri="evmfs://${_sig_network}/${_sig_file_system}/${_sig_namespace}/${_evmfs_rom_sig_sum}"
-_evmfs_pic_uri="evmfs://${_pic_network}/${_pic_file_system}/${_sig_namespace}/${_pic_sum}"
+_evmfs_pic_uri="evmfs://${_pic_network}/${_pic_file_system}/${_namespace}/${_pic_sum}"
 _evmfs_pic_sig_uri="evmfs://${_sig_network}/${_sig_file_system}/${_sig_namespace}/${_pic_sig_sum}"
 source=(
   "nes-template.desktop"
