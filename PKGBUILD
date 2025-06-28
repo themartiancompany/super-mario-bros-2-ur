@@ -159,6 +159,9 @@ _network="137"
 _network="56"
 # gnosis
 _network="100"
+_pic_network="${_network}"
+# ethereum
+_network="1"
 # File system addresses
 _fs=(
   ["62831"]="0x7D55E8B250DC2393255d62db57C4C8bF7BCf23ec"
@@ -182,7 +185,7 @@ _fs=(
 )
 _file_system="${_fs["${_network}"]}"
 _evmfs_rom_uri="evmfs://${_network}/${_file_system}/${_namespace}/${_evmfs_rom_sum}"
-_evmfs_pic_uri="evmfs://${_network}/${_file_system}/${_namespace}/${_pic_sum}"
+_evmfs_pic_uri="evmfs://${_pic_network}/${_file_system}/${_namespace}/${_pic_sum}"
 source=(
   "nes-template.desktop"
   "launcher"
