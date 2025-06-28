@@ -181,8 +181,9 @@ _fs=(
   ["321"]="0x78BF4B05035BDBEeE1C2048920e85bBA424be188"
   ["137"]="0x7D55E8B250DC2393255d62db57C4C8bF7BCf23ec"
   ["56"]="0x7D55E8B250DC2393255d62db57C4C8bF7BCf23ec"
+  ["1666600000"]="0x1f762a05cfab651d3d95778f9c89c46545913623"
   ["100"]="0x69470b18f8b8b5f92b48f6199dcb147b4be96571"
-  ["1"]="0x69470b18f8b8b5f92b48f6199dcb147b4be96571"
+  ["1"]="0x7D55E8B250DC2393255d62db57C4C8bF7BCf23ec"
 )
 _file_system="${_fs["${_network}"]}"
 _evmfs_rom_uri="evmfs://${_network}/${_file_system}/${_namespace}/${_evmfs_rom_sum}"
