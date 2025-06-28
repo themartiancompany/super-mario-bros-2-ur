@@ -3,7 +3,7 @@ Name=%_title%
 Comment=%pkgdesc%
 Type=Application
 TryExec=fceux
-Exec=videogame-launcher -e "%_game_launcher%" -l "%_game_language%" "%_app_id%"
+Exec=%_pkgbase%
 Icon=%_app_id%-%_uuid%
 Terminal=false
 Categories=Game;
@@ -12,7 +12,7 @@ Actions=preferences;fullscreen;
 
 [Desktop Action fullscreen]
 Name=Launch in fullscreen
-Exec=videogame-launcher -f -e "%_game_launcher%" -l "%_game_language%" "%_app_id%"
+Exec=%_pkgbase% -f
 
 [Desktop Action preferences]
 Name=Preferences

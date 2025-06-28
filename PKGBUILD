@@ -84,7 +84,10 @@ _uuid="NES-NROM-256-01"
 _title="Super Mario Bros"
 _rom_filename=""
 _pkg=super-mario-bros
-pkgname="${_pkg}"
+pkgbase="${_pkg}"
+pkgname=(
+  "${_pkg}"
+)
 pkgver=1.0
 pkgrel=1
 _pkgdesc=(
@@ -201,7 +204,7 @@ source=(
   "launcher"
 )
 sha256sums=(
-  "593e726db737390c7cd41e28a570d2ab19a3383d9ae163171a1afc14acaa6019"
+  "6bfa340ae8c696f7eafd2bc96496d8eea4152b870f4018b06a9fb5645ffea8ae"
   "b25117ba185a5af887b1e14fe8698a4de946475d17998637a88b5c06b58fde44"
 )
 if [[ "${_archive}" == "true" ]]; then
@@ -274,6 +277,10 @@ _desktop_file_prepare() {
     "${_app_id}.desktop"
   sed \
     -i "s/%_uuid%/${_uuid}/g" \
+    "${_app_id}.desktop"
+  sed \
+    -i \
+    "s/%_pkgbase%/${pkgbase}/g" \
     "${_app_id}.desktop"
   sed \
     -i \
