@@ -227,7 +227,7 @@ _desktop_file_prepare() {
     "${_app_id}.desktop"
   sed \
     -i \
-    "s/%_pkgdesc%/${pkgdesc}/g" \
+    "s/%pkgdesc%/${pkgdesc}/g" \
     "${_app_id}.desktop"
   sed \
     -i \
