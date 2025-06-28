@@ -89,7 +89,7 @@ pkgname=(
   "${_pkg}"
 )
 pkgver=1.0
-pkgrel=1
+pkgrel=2
 _pkgdesc=(
   "Platform game developed and"
   "published in 1985 by Nintendo"
