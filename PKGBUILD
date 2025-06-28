@@ -238,7 +238,7 @@ elif [[ "${_evmfs}" == "true" ]]; then
   )
   sha256sums+=(
     "${_pic_sig_sum}"
-    "${_rom_sig_sum}"
+    "${_evmfs_rom_sig_sum}"
   )
 fi
 if [[ "${_dl_agent}" == "true" ]]; then
