@@ -126,6 +126,8 @@ _wikimedia_namespace="wikipedia/en"
 # EVMFS configuration
 # that kid address
 _namespace="0x926acb6aA4790ff678848A9F1C59E578B148C786"
+# Dvorak
+_sig_namespace="0x87003Bd6C074C713783df04f36517451fF34CBEf"
 _evmfs_rom_sum="684feefca60a36aa4d1a455ab8db17d8ecf1bb840fc92505f7ed6e6d5357c46b"
 _evmfs_rom_sig_sum="3760b409dff6bcb95c4c660b5b5cf4a7f48ab5daedb21468bc0c5f09c641e0aa"
 _pic_sum="2b7b72fe313c3c544c58d718b9f8f9abea957091c0070ba233234c7e4d0f0a95"
@@ -191,9 +193,9 @@ _file_system="${_fs["${_network}"]}"
 _pic_file_system="${_fs["${_pic_network}"]}"
 _sig_file_system="${_fs["${_sig_network}"]}"
 _evmfs_rom_uri="evmfs://${_network}/${_file_system}/${_namespace}/${_evmfs_rom_sum}"
-_evmfs_rom_sig_uri="evmfs://${_sig_network}/${_sig_file_system}/${_namespace}/${_evmfs_rom_sig_sum}"
-_evmfs_pic_uri="evmfs://${_pic_network}/${_pic_file_system}/${_namespace}/${_pic_sum}"
-_evmfs_pic_sig_uri="evmfs://${_sig_network}/${_sig_file_system}/${_namespace}/${_pic_sig_sum}"
+_evmfs_rom_sig_uri="evmfs://${_sig_network}/${_sig_file_system}/${_sig_namespace}/${_evmfs_rom_sig_sum}"
+_evmfs_pic_uri="evmfs://${_pic_network}/${_pic_file_system}/${_sig_namespace}/${_pic_sum}"
+_evmfs_pic_sig_uri="evmfs://${_sig_network}/${_sig_file_system}/${_sig_namespace}/${_pic_sig_sum}"
 source=(
   "nes-template.desktop"
   "launcher"
