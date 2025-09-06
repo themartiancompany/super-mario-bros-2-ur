@@ -120,6 +120,11 @@ depends=(
   "${_emulators[@]}"
   "videogame-launcher"
 )
+if [[ "${_fceux}" == "true" ]]; then
+  depends+=(
+    "famicom-bios"
+  )
+fi
 if [[ "${_retroarch}" == "true" ]]; then
   depends+=(
     "libretro-quicknes"
@@ -370,7 +375,7 @@ prepare() {
     -d
       "${pkgdesc}"
     -p
-      "nes"
+      "famicom"
     -e
       "${_emulator}"
     -U
