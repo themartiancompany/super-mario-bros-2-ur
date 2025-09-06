@@ -93,7 +93,7 @@ if [[ ! -v "_langs" ]]; then
 fi
 _app_id="com.nintendo.SuperMarioBros2"
 _uuid_ja="FMC-SMB"
-_uuid_en="FMC-SMB"
+_uuid_en="${_uuid_ja}"
 _game_title="Super Mario Bros. 2"
 _rom_filename=""
 _pkg=super-mario-bros-2
@@ -236,6 +236,8 @@ _evmfs_sig_dir="evmfs://${_network}/${_sig_file_system}/${_sig_ns}"
 _evmfs_pic_dir="evmfs://${_network}/${_pic_file_system}/${_ns}"
 _famicom_uri="${_evmfs_dir}/${_famicom_sum}"
 _famicom_sig_uri="${_evmfs_sig_dir}/${_famicom_sig_sum}"
+_nes_uri="${_evmfs_dir}/${_nes_sum}"
+_nes_sig_uri="${_evmfs_sig_dir}/${_nes_sig_sum}"
 _pic_famicom_uri="${_evmfs_pic_dir}/${_pic_famicom_sum}"
 _pic_famicom_sig_uri="${_evmfs_sig_dir}/${_pic_famicom_sig_sum}"
 source=(
@@ -259,27 +261,57 @@ if [[ "${_evmfs}" == "true" ]]; then
     _dl_agent="false"
   fi
   _famicom_src="${_app_id}.FamiCom.fds.tar.xz::${_famicom_uri}"
+  _nes_src="${_app_id}.NES.nes.tar.xz::${_nes_uri}"
   _pic_famicom_src="${_app_id}.FamiCom.png::${_pic_famicom_uri}"
   _famicom_sig_src="${_app_id}.FamiCom.fds.tar.xz.sig::${_famicom_sig_uri}"
+  _nes_sig_src="${_app_id}.NES.nes.tar.xz.sig::${_nes_sig_uri}"
   _pic_famicom_sig_src="${_app_id}.FamiCom.png.sig::${_pic_famicom_sig_uri}"
   source+=(
-    "${_famicom_sig_src}"
     "${_pic_famicom_sig_src}"
   )
   sha256sums+=(
-    "${_famicom_sig_sum}"
     "${_pic_famicom_sig_sum}"
   )
+  if [[ "${_famicom}" == "true" ]]; then
+    source+=(
+      "${_famicom_sig_src}"
+    )
+    sha256sums+=(
+      "${_famicom_sig_sum}"
+    )
+  fi
+  if [[ "${_nes}" == "true" ]]; then
+    source+=(
+      "${_nes_sig_src}"
+    )
+    sha256sums+=(
+      "${_nes_sig_sum}"
+    )
+  fi
 fi
 if [[ "${_dl_agent}" == "true" ]]; then
   source+=(
-    "${_famicom_src}"
     "${_pic_famicom_src}"
   )
   sha256sums+=(
-    "${_famicom_sum}"
     "${_pic_famicom_sum}"
   )
+  if [[ "${_famicom}" == "true" ]]; then
+    source+=(
+      "${_famicom_src}"
+    )
+    sha256sums+=(
+      "${_famicom_sum}"
+    )
+  fi
+  if [[ "${_nes}" == "true" ]]; then
+    source+=(
+      "${_nes_src}"
+    )
+    sha256sums+=(
+      "${_nes_sum}"
+    )
+  fi
 fi
 
 _usr_get() {
@@ -375,13 +407,15 @@ _rom_extract() {
     lrunzip \
       -z \
       --outfile "${_app_id}.FamiCom.fds" -- \
-      "${_app_id}.FamiCom.fds.tar.xz"
+      "${_app_id}.FamiCom.fds.tar.xz" || \
+    true
   fi
   if [[ "${_nes}" == "true" ]]; then
-  lrunzip \
-    -z \
-    --outfile "${_app_id}.NES.nes" -- \
-    "${_app_id}.NES.nes.tar.xz"
+    lrunzip \
+      -z \
+      --outfile "${_app_id}.NES.nes" -- \
+      "${_app_id}.NES.nes.tar.xz" || \
+    true
   fi
 }
 
@@ -390,51 +424,100 @@ prepare() {
     _sum \
     _download \
     _extract \
-    _the_lost_levels_launcher_create_opts=()
-  _the_lost_levels_launcher_create_opts=(
-    -v
-    -t
-      "${_game_title}"
-    -d
-      "${pkgdesc}"
-    -p
-      "famicom"
-    -e
-      "${_emulator}"
-    -U
-      "${_uuid_ja}"
-    -o
-      "${srcdir}/${_pkg}-famicom"
-  )
-  cp \
-    "${_app_id}.FamiCom.png" \
-    "${_app_id}.NES.png"
-  videogame-launcher-create \
-    "${_the_lost_levels_launcher_create_opts[@]}" \
-    "${_app_id}.FamiCom"
-  if [[ -e "${_app_id}.fds" ]]; then
-    mv \
-      "${_app_id}.fds" \
-      "${_app_id}.FamiCom.fds"
-  fi
+    _famicom_launcher_create_opts=() \
+    _nes_launcher_create_opts=()
   _download="false"
   _extract="false"
   if [[ "${_dl_agent}" == "false" ]]; then
-    _evmfs_get \
-      "${_app_id}.FamiCom.fds.tar.xz" \
-      "${_sum}" \
-      "${_uri}"
     _evmfs_get \
       "${_app_id}.FamiCom.png" \
       "${_pic_famicom_sum}" \
       "${_pic_famicom_uri}"
   fi
-  if [[ ! -e "${_app_id}.fds" && \
-        ! -e "${_app_id}.FamiCom.fds" ]]; then
-    _extract="true"
+  if [[ "${_famicom}" == "true" ]]; then
+    _famicom_launcher_create_opts=(
+      -v
+      -t
+        "${_game_title}"
+      -d
+        "${pkgdesc}"
+      -p
+        "famicom"
+      -e
+        "${_emulator}"
+      -U
+        "${_uuid_ja}"
+      -o
+        "${srcdir}/${_pkg}-famicom"
+    )
+    videogame-launcher-create \
+      "${_famicom_launcher_create_opts[@]}" \
+      "${_app_id}.FamiCom"
+    if [[ -e "${_app_id}.fds" ]]; then
+      mv \
+        "${_app_id}.fds" \
+        "${_app_id}.FamiCom.fds"
+    fi
+    _download="false"
+    _extract="false"
+    if [[ "${_dl_agent}" == "false" ]]; then
+      _evmfs_get \
+        "${_app_id}.FamiCom.fds.tar.xz" \
+        "${_famicom_sum}" \
+        "${_famicom_uri}"
+    fi
+    if [[ ! -e "${_app_id}.fds" && \
+          ! -e "${_app_id}.FamiCom.fds" ]]; then
+      _extract="true"
+    fi
   fi
-  if [[ "${_extract}" == "true" ]]; then
-    _rom_extract
+  if [[ "${_nes}" == "true" ]]; then
+    if [[ -e "${_app_id}.fds" ]]; then
+      mv \
+        "${_app_id}.nes" \
+        "${_app_id}.NES.nes"
+    fi
+    cp \
+      "${_app_id}.FamiCom.png" \
+      "${_app_id}.NES.png"
+    _nes_launcher_create_opts=(
+      -v
+      -t
+        "${_game_title}. Nintendo Entertainment System port."
+      -d
+        "${pkgdesc}"
+      -p
+        "nes"
+      -e
+        "${_emulator}"
+      -U
+        "${_uuid_en}"
+      -o
+        "${srcdir}/${_pkg}-nes"
+    )
+    videogame-launcher-create \
+      "${_nes_launcher_create_opts[@]}" \
+      "${_app_id}.NES"
+    if [[ -e "${_app_id}.nes" ]]; then
+      mv \
+        "${_app_id}.nes" \
+        "${_app_id}.NES.nes"
+    fi
+    _download="false"
+    _extract="false"
+    if [[ "${_dl_agent}" == "false" ]]; then
+      _evmfs_get \
+        "${_app_id}.NES.nes.tar.xz" \
+        "${_famicom_sum}" \
+        "${_famicom_uri}"
+    fi
+    if [[ ! -e "${_app_id}.nes" && \
+          ! -e "${_app_id}.NES.nes" ]]; then
+      _extract="true"
+    fi
+    if [[ "${_extract}" == "true" ]]; then
+      _rom_extract
+    fi
   fi
 }
 
@@ -609,10 +692,6 @@ package_super-mario-bros-2-nes() {
     -vDm755 \
     "${_pkg}-nes" \
     "${pkgdir}/usr/bin/${_pkg}-nes"
-  ln \
-    -s \
-    "${_usr}/bin/${pkgbase}-nes" \
-    "${pkgdir}/usr/bin/${_pkg}"
   _launcher_install \
     "${_app_id}.NES" \
     "${_uuid_en}"
