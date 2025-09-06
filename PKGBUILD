@@ -79,29 +79,28 @@ if [[ "${_fceux}" == "true" ]]; then
     "${_emulator}"
   )
 fi
-_app_id="com.nintendo.SuperMarioBros"
-_uuid="NES-NROM-256-01"
-_title="Super Mario Bros"
+_app_id="com.nintendo.SuperMarioBros2"
+_jp_uuid="FMC-SMB"
+_game_title="Super Mario Bros. 2"
 _rom_filename=""
-_pkg=super-mario-bros
+_pkg=super-mario-bros-2
 pkgbase="${_pkg}"
 pkgname=(
   "${_pkg}"
 )
 pkgver=1.0
-pkgrel=2
+_videogame_launcher_pkgver="0.0.0.0.0.0.0.0.0.0.1"
+pkgrel=1
 _pkgdesc=(
-  "Platform game developed and"
-  "published in 1985 by Nintendo"
-  "for the Famicom in Japan and"
-  "for the Nintendo Entertainment"
-  "System (NES) in North America."
+  "1986 platform game developed"
+  "by Nintendo R&D4 for the"
+  "Famicom Disk System (FDS)."
 )
 pkgdesc="${_pkgdesc[*]}"
 arch=(
   'any'
 )
-url="https://en.wikipedia.org/wiki/${_title}"
+url="https://en.wikipedia.org/wiki/${_game_title}"
 depends=(
   "${_emulators[@]}"
   "videogame-launcher"
@@ -111,7 +110,10 @@ if [[ "${_retroarch}" == "true" ]]; then
     "libretro-quicknes"
   )
 fi
-makedepends=()
+makedepends=(
+  "coreutils"
+  "videogame-launcher>=${_videogame_launcher_pkgver}"
+)
 if [[ "${_os}" == "Android" ]]; then
   makedepends+=(
     "termux-shortcuts-utils"
@@ -122,19 +124,15 @@ _wikimedia="https://upload.wikimedia.org"
 license=(
   "custom"
 )
-_dmca_exemption="${_archive}/about/dmca.php"
-_archive_namespace="download/nes-roms"
-_archive_rom_url="${_archive}${_archive_namespace}/Super%20Mario%20Bros.%20%28World%29.nes"
-_wikimedia_namespace="wikipedia/en"
 # EVMFS configuration
 # that kid address
-_namespace="0x926acb6aA4790ff678848A9F1C59E578B148C786"
+_ns="0x926acb6aA4790ff678848A9F1C59E578B148C786"
 # Dvorak
-_sig_namespace="0x87003Bd6C074C713783df04f36517451fF34CBEf"
-_evmfs_rom_sum="684feefca60a36aa4d1a455ab8db17d8ecf1bb840fc92505f7ed6e6d5357c46b"
-_evmfs_rom_sig_sum="3760b409dff6bcb95c4c660b5b5cf4a7f48ab5daedb21468bc0c5f09c641e0aa"
-_pic_sum="2b7b72fe313c3c544c58d718b9f8f9abea957091c0070ba233234c7e4d0f0a95"
-_pic_sig_sum="7871474a3ad49f033d880fa78b0b5771b15df71a47b29bc3d63167aed3478890"
+_sig_ns="0x87003Bd6C074C713783df04f36517451fF34CBEf"
+_sum="bbd7ded4194b40d57ee740e2ac7ea8bb88b06f3c27cde919e392614d8fec3d1a"
+_sig_sum="ce420fe609ea298f43a1380db2d5e6c9fcf12a1ac0bae1af503c323da2832dab"
+_pic_sum="6f2d2e69d282a3d31217b4bd955cd8e8e8b1c55a5bb8421e1d24f184e75149d7"
+_pic_sig_sum="e61cbab0c7e3933aa219216f6c818e6f5ffeda21543d9e9d5b9226de8a460d54"
 # testnets
 # gensyn
 _network="685685"
@@ -198,27 +196,20 @@ _fs=(
 _file_system="${_fs["${_network}"]}"
 _pic_file_system="${_fs["${_pic_network}"]}"
 _sig_file_system="${_fs["${_sig_network}"]}"
-_evmfs_rom_uri="evmfs://${_network}/${_file_system}/${_namespace}/${_evmfs_rom_sum}"
-_evmfs_rom_sig_uri="evmfs://${_sig_network}/${_sig_file_system}/${_sig_namespace}/${_evmfs_rom_sig_sum}"
-_evmfs_pic_uri="evmfs://${_pic_network}/${_pic_file_system}/${_namespace}/${_pic_sum}"
-_evmfs_pic_sig_uri="evmfs://${_sig_network}/${_sig_file_system}/${_sig_namespace}/${_pic_sig_sum}"
+_evmfs_dir="evmfs://${_sig_network}/${_file_system}/${_ns}"
+_evmfs_sig_dir="evmfs://${_network}/${_sig_file_system}/${_sig_ns}"
+_evmfs_pic_dir="evmfs://${_network}/${_pic_file_system}/${_ns}"
+_uri="${_evmfs_dir}/${_sum}"
+_sig_uri="${_evmfs_sig_dir}/${_sig_sum}"
+_pic_uri="${_evmfs_pic_dir}/${_pic_sum}"
+_pic_sig_uri="${_evmfs_sig_dir}/${_pic_sig_sum}"
 source=(
-  "nes-template.desktop"
-  "launcher"
 )
 sha256sums=(
   "6bfa340ae8c696f7eafd2bc96496d8eea4152b870f4018b06a9fb5645ffea8ae"
   "b25117ba185a5af887b1e14fe8698a4de946475d17998637a88b5c06b58fde44"
 )
-if [[ "${_archive}" == "true" ]]; then
-  _rom="${_app_id}.nes::${_archive_rom_uri}"
-  _rom_sum="0b3d9e1f01ed1668205bab34d6c82b0e281456e137352e4f36a9b2cfa3b66dea"
-  # This one could change actually because Wikipedia users can update
-  # this and they have to delete the previous version.
-  # So you know, another reason to use the evmfs as default.
-  _pic_uri="${_wikimedia}/${_wikimedia_namespace}/0/03/Super_Mario_Bros._box.png"
-  _dl_agent="true"
-elif [[ "${_evmfs}" == "true" ]]; then
+if [[ "${_evmfs}" == "true" ]]; then
   makedepends+=(
     "evmfs"
     "${_zpaq_archiver}"
@@ -234,94 +225,29 @@ elif [[ "${_evmfs}" == "true" ]]; then
       "${_msg[*]}"
     _dl_agent="false"
   fi
-  _rom="${_app_id}.nes.zpaq::${_evmfs_rom_uri}"
-  _pic_uri="${_evmfs_pic_uri}"
-  _rom_sum="${_evmfs_rom_sum}"
-  _pic_uri="${_evmfs_pic_uri}"
-  _rom_sig="${_app_id}.nes.zpaq.sig::${_evmfs_rom_sig_uri}"
-  _pic_sig="${_app_id}.png.sig::${_evmfs_pic_sig_uri}"
+  _src="${_app_id}.nes.tar.xz::${_uri}"
+  _pic_src="${_app_id}.png::${_pic_uri}"
+  _sig_src="${_app_id}.nes.tar.xz.sig::${_sig_uri}"
+  _pic_sig_src="${_app_id}.png.sig::${_pic_sig_uri}"
   source+=(
-    "${_rom_sig}"
-    "${_pic_sig}"
+    "${_sig_src}"
+    "${_pic_sig_src}"
   )
   sha256sums+=(
-    "${_evmfs_rom_sig_sum}"
+    "${_sig_sum}"
     "${_pic_sig_sum}"
   )
 fi
 if [[ "${_dl_agent}" == "true" ]]; then
   source+=(
-    "${_rom}"
-    "${_app_id}.png::${_pic_uri}"
+    "${_src}"
+    "${_pic_src}"
   )
   sha256sums+=(
-    "${_rom_sum}"
+    "${_sum}"
     "${_pic_sum}"
   )
 fi
-
-_desktop_file_prepare() {
-  msg \
-    "Preparing desktop file."
-  mv \
-    "nes-template.desktop" \
-    "${_app_id}.desktop"
-  sed \
-    -i \
-    "s/%_title%/${_title}/g" \
-    "${_app_id}.desktop"
-  sed \
-    -i \
-    "s/%_pkgdesc%/${pkgdesc}/g" \
-    "${_app_id}.desktop"
-  sed \
-    -i \
-    "s/%_app_id%/${_app_id}/g" \
-    "${_app_id}.desktop"
-  sed \
-    -i "s/%_uuid%/${_uuid}/g" \
-    "${_app_id}.desktop"
-  sed \
-    -i \
-    "s/%_pkgbase%/${pkgbase}/g" \
-    "${_app_id}.desktop"
-  sed \
-    -i \
-    "s/%_game_launcher%/${_emulator}/g" \
-    "${_app_id}.desktop"
-  sed \
-    -i \
-    "s/%_game_language%/any/g" \
-    "${_app_id}.desktop"
-  msg \
-    "done"
-}
-
-_launcher_prepare() {
-  msg \
-    "Preparing command-line launcher."
-  mv \
-    "launcher" \
-    "${pkgname}"
-  sed \
-    -i \
-    "s/%_app_id%/${_app_id}/g" \
-    "${pkgname}"
-  sed \
-    -i \
-    "s/%_game_launcher%/${_emulator}/g" \
-    "${pkgname}"
-  sed \
-    -i \
-    "s/%_game_language%/any/g" \
-    "${pkgname}"
-  sed \
-    -i \
-    "s/%_game_platform%/nes/g" \
-    "${pkgname}"
-  msg \
-    "Done."
-}
 
 _usr_get() {
   local \
@@ -422,18 +348,37 @@ prepare() {
   local \
     _sum \
     _download \
-    _extract
+    _extract \
+    _the_lost_levels_launcher_create_opts=()
+  _the_lost_levels_launcher_create_opts=(
+    -v
+    -t
+      "${_game_title}"
+    -d
+      "${pkgdesc}."
+    -p
+      "nes"
+    -e
+      "${_emulator}"
+    -U
+      "${_jp_uuid}"
+    -o
+      "${srcdir}/${_pkg}"
+  )
+  videogame-launcher-create \
+    "${_the_lost_levels_launcher_create_opts[@]}" \
+    "${_app_id}"
   _download="false"
   _extract="false"
   if [[ "${_dl_agent}" == "false" ]]; then
     _evmfs_get \
       "${_app_id}.nes.zpaq" \
       "${_rom_sum}" \
-      "${_evmfs_rom_uri}"
+      "${_uri}"
     _evmfs_get \
       "${_app_id}.png" \
       "${_pic_sum}" \
-      "${_evmfs_pic_uri}"
+      "${_pic_uri}"
   fi
   if [[ ! -e "${_app_id}.nes" ]]; then
     _extract="true"
@@ -441,8 +386,6 @@ prepare() {
   if [[ "${_extract}" == "true" ]]; then
     _rom_extract
   fi
-  _desktop_file_prepare
-  _launcher_prepare
 }
 
 _pkgdir_get() {
@@ -471,15 +414,15 @@ package() {
         "${pkgdir}")${_rom_dir}"
     ln \
       -s \
-      "${_rom_dir}/${_uuid}.nes" \
-      "${pkgdir}${_game_dir}/${_uuid}.nes"
+      "${_rom_dir}/${_jp_uuid}.nes" \
+      "${pkgdir}${_game_dir}/${_jp_uuid}.nes"
   fi
   install \
     -vDm644 \
     "${_app_id}.nes" \
-    "${_rom_install_dir}/${_uuid}.nes"
+    "${_rom_install_dir}/${_jp_uuid}.nes"
   echo \
-    "${_rom_dir}/${_uuid}.nes" > \
+    "${_rom_dir}/${_jp_uuid}.nes" > \
     "${pkgdir}${_game_dir}/any"
   install \
     -vDm755 \
@@ -488,7 +431,7 @@ package() {
   install \
     -vDm644 \
     "${_app_id}.png" \
-    "${pkgdir}/usr/share/icons/${_app_id}-${_uuid}.png"
+    "${pkgdir}/usr/share/icons/${_app_id}-${_jp_uuid}.png"
   if [[ "${_os}" == "Android" ]]; then
     install \
       -vdm755 \
