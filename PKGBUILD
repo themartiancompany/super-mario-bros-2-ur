@@ -176,11 +176,11 @@ _network="321"
 _network="137"
 # binance smart chain
 _network="56"
+# ethereum
+_network="1"
 # gnosis
 _network="100"
 _pic_network="${_network}"
-# ethereum
-_network="1"
 _sig_network="${_network}"
 # File system addresses
 _fs=(
