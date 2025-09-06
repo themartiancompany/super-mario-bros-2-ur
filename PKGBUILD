@@ -131,7 +131,7 @@ arch=(
 url="https://en.wikipedia.org/wiki/${_game_title}"
 depends=(
   "${_emulators[@]}"
-  "videogame-launcher"
+  "videogame-launcher>=${_videogame_launcher_pkgver}"
 )
 if [[ "${_fceux}" == "true" ]]; then
   depends+=(
