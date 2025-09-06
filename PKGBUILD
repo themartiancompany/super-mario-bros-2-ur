@@ -483,7 +483,7 @@ prepare() {
     _nes_launcher_create_opts=(
       -v
       -t
-        "${_game_title}"
+        "${_game_title} (NES)"
       -d
         "${pkgdesc}. Nintendo Entertainment System port."
       -p
@@ -724,7 +724,7 @@ package_super-mario-bros-2-nes() {
     install \
       -vDm644 \
       "${srcdir}/${_app_id}.NES.png" \
-      "${pkgdir}/home/.shortcuts/icons/${_game_title} (${_uuid_en}).png"
+      "${pkgdir}/home/.shortcuts/icons/${_game_title} (NES) (${_uuid_en}).png"
   elif [[ "${_os}" == "GNU/Linux" ]]; then
     _data_path="${_game_dir}"
     install \
