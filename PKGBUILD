@@ -485,7 +485,7 @@ prepare() {
       -t
         "${_game_title} (NES)"
       -d
-        "${pkgdesc}. Nintendo Entertainment System port."
+        "${pkgdesc} Nintendo Entertainment System port."
       -p
         "nes"
       -e
