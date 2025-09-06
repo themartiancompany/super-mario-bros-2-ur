@@ -117,7 +117,7 @@ if [[ "${_nes}" == "true" ]]; then
   )
 fi
 pkgver=1.0
-_videogame_launcher_pkgver="0.0.0.0.0.0.0.0.0.0.1"
+_videogame_launcher_pkgver="0.0.0.0.0.0.0.0.0.0.1.1"
 pkgrel=1
 _pkgdesc=(
   "1986 platform game developed"
