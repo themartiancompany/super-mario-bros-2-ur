@@ -483,9 +483,9 @@ prepare() {
     _nes_launcher_create_opts=(
       -v
       -t
-        "${_game_title}. Nintendo Entertainment System port."
+        "${_game_title}"
       -d
-        "${pkgdesc}"
+        "${pkgdesc}. Nintendo Entertainment System port."
       -p
         "nes"
       -e
