@@ -36,6 +36,12 @@ _evmfs_available="$( \
     -v \
     "evmfs" || \
     true)"
+if [[ ! -v "_langs" ]]; then
+  _langs=()
+fi
+if [[ ! -v "_famicon" ]]; then
+  _famicon="true"
+fi
 if [[ ! -v "_evmfs" ]]; then
   if [[ "${_evmfs_available}" != "" ]]; then
     _evmfs="true"
@@ -65,7 +71,7 @@ if [[ ! -v "_fceux" ]]; then
     _fceux="true"
   fi
 fi
-_zpaq_archiver="lrzip"
+_xz_archiver="lrzip"
 _emulators=()
 if [[ "${_retroarch}" == "true" ]]; then
   _emulator="retroarch"
@@ -79,15 +85,24 @@ if [[ "${_fceux}" == "true" ]]; then
     "${_emulator}"
   )
 fi
+if [[ ! -v "_langs" ]]; then
+  _langs=()
+fi
 _app_id="com.nintendo.SuperMarioBros2"
-_jp_uuid="FMC-SMB"
+_uuid_ja="FMC-SMB"
 _game_title="Super Mario Bros. 2"
 _rom_filename=""
 _pkg=super-mario-bros-2
 pkgbase="${_pkg}"
-pkgname=(
-  "${_pkg}"
-)
+pkgname=()
+if [[ "${_famicon}" == "true" ]]; then
+  _langs+=(
+    "ja"
+  )
+  pkgname+=(
+    "${_pkg}-famicon"
+  )
+fi
 pkgver=1.0
 _videogame_launcher_pkgver="0.0.0.0.0.0.0.0.0.0.1"
 pkgrel=1
@@ -212,7 +227,7 @@ sha256sums=(
 if [[ "${_evmfs}" == "true" ]]; then
   makedepends+=(
     "evmfs"
-    "${_zpaq_archiver}"
+    "${_xz_archiver}"
   )
   if [[ ! " ${DLAGENTS[*]} " == *" evmfs::"* ]]; then
     _msg=(
@@ -225,10 +240,10 @@ if [[ "${_evmfs}" == "true" ]]; then
       "${_msg[*]}"
     _dl_agent="false"
   fi
-  _src="${_app_id}.nes.tar.xz::${_uri}"
-  _pic_src="${_app_id}.png::${_pic_uri}"
-  _sig_src="${_app_id}.nes.tar.xz.sig::${_sig_uri}"
-  _pic_sig_src="${_app_id}.png.sig::${_pic_sig_uri}"
+  _src="${_app_id}.Famicon.nes.tar.xz::${_uri}"
+  _pic_src="${_app_id}.Famicon.png::${_pic_uri}"
+  _sig_src="${_app_id}.Famicon.nes.tar.xz.sig::${_sig_uri}"
+  _pic_sig_src="${_app_id}.Famicon.png.sig::${_pic_sig_uri}"
   source+=(
     "${_sig_src}"
     "${_pic_sig_src}"
@@ -340,8 +355,8 @@ _evmfs_get() {
 _rom_extract() {
   lrunzip \
     -z \
-    --outfile "${_app_id}.nes" -- \
-    "${_app_id}.nes.zpaq"
+    --outfile "${_app_id}.Famicon.nes" -- \
+    "${_app_id}.Famicon.nes.tar.xz"
 }
 
 prepare() {
@@ -355,32 +370,38 @@ prepare() {
     -t
       "${_game_title}"
     -d
-      "${pkgdesc}."
+      "${pkgdesc}"
     -p
       "nes"
     -e
       "${_emulator}"
     -U
-      "${_jp_uuid}"
+      "${_uuid_ja}"
     -o
-      "${srcdir}/${_pkg}"
+      "${srcdir}/${_pkg}-famicon"
   )
   videogame-launcher-create \
     "${_the_lost_levels_launcher_create_opts[@]}" \
-    "${_app_id}"
+    "${_app_id}.Famicon"
+  if [[ -e "${_app_id}.nes" ]]; then
+    mv \
+      "${_app_id}.nes" \
+      "${_app_id}.Famicon.nes"
+  fi
   _download="false"
   _extract="false"
   if [[ "${_dl_agent}" == "false" ]]; then
     _evmfs_get \
-      "${_app_id}.nes.zpaq" \
-      "${_rom_sum}" \
+      "${_app_id}.Famicon.nes.tar.xz" \
+      "${_sum}" \
       "${_uri}"
     _evmfs_get \
-      "${_app_id}.png" \
+      "${_app_id}.Famicon.png" \
       "${_pic_sum}" \
       "${_pic_uri}"
   fi
-  if [[ ! -e "${_app_id}.nes" ]]; then
+  if [[ ! -e "${_app_id}.nes" && \
+        ! -e "${_app_id}.Famicon.nes" ]]; then
     _extract="true"
   fi
   if [[ "${_extract}" == "true" ]]; then
@@ -388,67 +409,139 @@ prepare() {
   fi
 }
 
-_pkgdir_get() {
+_icon_install() {
   local \
-    _pkgdir="${1}"
-  realpath \
-    "${_pkgdir}/../../../.."
+    _app_id="${1}" \
+    _uuid="${2}"
+  install \
+    -vDm755 \
+    "${_app_id}.png" \
+    "${pkgdir}/usr/share/icons/${_app_id}-${_uuid}.png"
 }
 
-package() {
+_desktop_file_install() {
   local \
-    _game_dir \
-    _rom_dir \
-    _rom_install_dir
-  _game_dir="/usr/games/${_app_id}"
-  install \
-    -vdm755 \
-    "${pkgdir}${_game_dir}"
-  if [[ "${_os}" == "GNU/Linux" ]]; then
-    _rom_dir="${_game_dir}"
-    _rom_install_dir="${pkgdir}${_rom_dir}"
-  elif [[ "${_os}" == "Android" ]]; then
-    _rom_dir="/storage/emulated/0/Android/media/${_app_id}"
-    _rom_install_dir="$( \
-      _pkgdir_get \
-        "${pkgdir}")${_rom_dir}"
-    ln \
-      -s \
-      "${_rom_dir}/${_jp_uuid}.nes" \
-      "${pkgdir}${_game_dir}/${_jp_uuid}.nes"
-  fi
-  install \
-    -vDm644 \
-    "${_app_id}.nes" \
-    "${_rom_install_dir}/${_jp_uuid}.nes"
-  echo \
-    "${_rom_dir}/${_jp_uuid}.nes" > \
-    "${pkgdir}${_game_dir}/any"
+    _app_id="${1}"
   install \
     -vDm755 \
     "${_app_id}.desktop" \
     "${pkgdir}/usr/share/applications/${_app_id}.desktop"
+}
+
+_launcher_install() {
+  local \
+    _app_id="${1}" \
+    _uuid="${2}" \
+    _icon_name
+  _icon_name="${_app_id}"
+  if (( 2 < "$#" )); then
+    _icon_name="${3}"
+  fi
+  _icon_install \
+    "${_app_id}" \
+    "${_uuid}"
+  _desktop_file_install \
+    "${_app_id}"
+}
+
+_lang_provides() {
+  local \
+    _pkg="${1}" \
+    _pkgver="${2}" \
+    _langs=()
+  shift \
+    2
+  _langs+=(
+    "$@"
+  )
+  for _lang in "${_langs[@]}"; do
+    provides+=(
+      "${_pkg}-${_lang}=${pkgver}"
+    )
+  done
+}
+
+package_super-mario-2-famicon() {
+  local \
+    _games_dir \
+    _game_dir \
+    _lang \
+    _usr \
+    _install_shared_opts=() \
+    _termux_shortcut_new_opts=() \
+    _data_path
+  pkgdesc="${pkgdesc}. Famicon Japanese version."
+  _usr="$( \
+    _usr_get)"
+  _games_dir="${_usr}/games"
+  _game_dir="${_games_dir}/${_app_id}"
+  provides=(
+    "${_pkg}=${pkgver}"
+    "${_pkg}-the-lost-levels=${pkgver}"
+    "${_pkg}-ja=${pkgver}"
+  )
+  _lang_provides \
+    "${_pkg}" \
+    "${pkgver}" \
+    "ja"
+  _lang_provides \
+    "${_pkg}-famicon" \
+    "${pkgver}" \
+    "ja"
   install \
-    -vDm644 \
-    "${_app_id}.png" \
-    "${pkgdir}/usr/share/icons/${_app_id}-${_jp_uuid}.png"
+    -vDm755 \
+    "${_pkg}-famicon" \
+    "${pkgdir}/usr/bin/${_pkg}-famicon"
+  ln \
+    -s \
+    "${_usr}/bin/${pkgbase}" \
+    "${pkgdir}/usr/bin/${_pkg}-famicon"
+  _launcher_install \
+    "${_app_id}.Famicon" \
+    "${_uuid_ja}"
+  install \
+    -vdm755 \
+    "${pkgdir}/usr/games/${_app_id}.Famicon"
   if [[ "${_os}" == "Android" ]]; then
+    _data_path="/storage/emulated/0/Android/media/${_app_id}"
+    _install_shared_opts+=(
+      -v
+      "${srcdir}/${_app_id}.Famicon.nes"
+      "${pkgdir}"
+      "/usr/games/${_app_id}"
+      "Android/media/${_app_id}"
+      "${_uuid_ja}.nes"
+    )
+    termux-install-shared \
+      "${_install_shared_opts[@]}"
     install \
       -vdm755 \
       "${pkgdir}/home/.shortcuts"
+    _termux_shortcut_new_opts+=(
+      -v
+      -o
+        "${pkgdir}/home/.shortcuts"
+    )
     termux-shortcut-new \
-      -o \
-        "${pkgdir}/home/.shortcuts" \
-      "${_app_id}.desktop"
+      "${_termux_shortcut_new_opts[@]}" \
+      "${_app_id}.Famicon.desktop"
     install \
       -vDm644 \
-      "${_app_id}.png" \
-      "${pkgdir}/home/.shortcuts/icons/${_title}.png"
+      "${srcdir}/${_app_id}.Famicon.png" \
+      "${pkgdir}/home/.shortcuts/icons/${_game_title} (${_uuid_ja}).png"
+  elif [[ "${_os}" == "GNU/Linux" ]]; then
+    _data_path="${_game_dir}"
+    install \
+      -vDm644 \
+      "${srcdir}/${_app_id}.Famicon.nes" \
+      "${pkgdir}/usr/games/${_app_id}/${_uuid_ja}.nes"
   fi
-  install \
-    -vDm755 \
-    "${pkgname}" \
-    "${pkgdir}/usr/bin/${pkgname}"
+  for _lang in "any" \
+               "ja"; do
+    echo \
+      "${_data_path}/${_uuid_ja}.nes" > \
+      "${pkgdir}/usr/games/${_app_id}.Famicon/${_lang}"
+  done
 }
 
 # vim:set sw=2 sts=-1 et:
