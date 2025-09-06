@@ -39,8 +39,11 @@ _evmfs_available="$( \
 if [[ ! -v "_langs" ]]; then
   _langs=()
 fi
-if [[ ! -v "_famicon" ]]; then
-  _famicon="true"
+if [[ ! -v "_famicom" ]]; then
+  _famicom="true"
+fi
+if [[ ! -v "_nes" ]]; then
+  _nes="true"
 fi
 if [[ ! -v "_evmfs" ]]; then
   if [[ "${_evmfs_available}" != "" ]]; then
@@ -90,17 +93,27 @@ if [[ ! -v "_langs" ]]; then
 fi
 _app_id="com.nintendo.SuperMarioBros2"
 _uuid_ja="FMC-SMB"
+_uuid_en="FMC-SMB"
 _game_title="Super Mario Bros. 2"
 _rom_filename=""
 _pkg=super-mario-bros-2
 pkgbase="${_pkg}"
 pkgname=()
-if [[ "${_famicon}" == "true" ]]; then
+if [[ "${_famicom}" == "true" ]]; then
   _langs+=(
     "ja"
+    "en"
   )
   pkgname+=(
-    "${_pkg}-famicon"
+    "${_pkg}-famicom"
+  )
+fi
+if [[ "${_nes}" == "true" ]]; then
+  _langs+=(
+    "en"
+  )
+  pkgname+=(
+    "${_pkg}-nes"
   )
 fi
 pkgver=1.0
@@ -109,7 +122,7 @@ pkgrel=1
 _pkgdesc=(
   "1986 platform game developed"
   "by Nintendo R&D4 for the"
-  "Famicom Disk System (FDS)."
+  "FamiCom Disk System (FDS)."
 )
 pkgdesc="${_pkgdesc[*]}"
 arch=(
@@ -149,10 +162,12 @@ license=(
 _ns="0x926acb6aA4790ff678848A9F1C59E578B148C786"
 # Dvorak
 _sig_ns="0x87003Bd6C074C713783df04f36517451fF34CBEf"
-_sum="bbd7ded4194b40d57ee740e2ac7ea8bb88b06f3c27cde919e392614d8fec3d1a"
-_sig_sum="ce420fe609ea298f43a1380db2d5e6c9fcf12a1ac0bae1af503c323da2832dab"
-_pic_sum="6f2d2e69d282a3d31217b4bd955cd8e8e8b1c55a5bb8421e1d24f184e75149d7"
-_pic_sig_sum="e61cbab0c7e3933aa219216f6c818e6f5ffeda21543d9e9d5b9226de8a460d54"
+_famicom_sum="30a2dec2df341c418bf6608569dc24b8cff7c4dfe18e3f71ef43dc1e708322ff"
+_famicom_sig_sum="960aaa2962206a5fb57f742bf48c86b96895465112011d1959de3f193fd8f20a"
+_nes_sum="bbd7ded4194b40d57ee740e2ac7ea8bb88b06f3c27cde919e392614d8fec3d1a"
+_nes_sig_sum="ce420fe609ea298f43a1380db2d5e6c9fcf12a1ac0bae1af503c323da2832dab"
+_pic_famicom_sum="6f2d2e69d282a3d31217b4bd955cd8e8e8b1c55a5bb8421e1d24f184e75149d7"
+_pic_famicom_sig_sum="e61cbab0c7e3933aa219216f6c818e6f5ffeda21543d9e9d5b9226de8a460d54"
 # testnets
 # gensyn
 _network="685685"
@@ -219,10 +234,10 @@ _sig_file_system="${_fs["${_sig_network}"]}"
 _evmfs_dir="evmfs://${_sig_network}/${_file_system}/${_ns}"
 _evmfs_sig_dir="evmfs://${_network}/${_sig_file_system}/${_sig_ns}"
 _evmfs_pic_dir="evmfs://${_network}/${_pic_file_system}/${_ns}"
-_uri="${_evmfs_dir}/${_sum}"
-_sig_uri="${_evmfs_sig_dir}/${_sig_sum}"
-_pic_uri="${_evmfs_pic_dir}/${_pic_sum}"
-_pic_sig_uri="${_evmfs_sig_dir}/${_pic_sig_sum}"
+_famicom_uri="${_evmfs_dir}/${_famicom_sum}"
+_famicom_sig_uri="${_evmfs_sig_dir}/${_famicom_sig_sum}"
+_pic_famicom_uri="${_evmfs_pic_dir}/${_pic_famicom_sum}"
+_pic_famicom_sig_uri="${_evmfs_sig_dir}/${_pic_famicom_sig_sum}"
 source=(
 )
 sha256sums=(
@@ -243,27 +258,27 @@ if [[ "${_evmfs}" == "true" ]]; then
       "${_msg[*]}"
     _dl_agent="false"
   fi
-  _src="${_app_id}.Famicon.nes.tar.xz::${_uri}"
-  _pic_src="${_app_id}.Famicon.png::${_pic_uri}"
-  _sig_src="${_app_id}.Famicon.nes.tar.xz.sig::${_sig_uri}"
-  _pic_sig_src="${_app_id}.Famicon.png.sig::${_pic_sig_uri}"
+  _famicom_src="${_app_id}.FamiCom.fds.tar.xz::${_famicom_uri}"
+  _pic_famicom_src="${_app_id}.FamiCom.png::${_pic_famicom_uri}"
+  _famicom_sig_src="${_app_id}.FamiCom.fds.tar.xz.sig::${_famicom_sig_uri}"
+  _pic_famicom_sig_src="${_app_id}.FamiCom.png.sig::${_pic_famicom_sig_uri}"
   source+=(
-    "${_sig_src}"
-    "${_pic_sig_src}"
+    "${_famicom_sig_src}"
+    "${_pic_famicom_sig_src}"
   )
   sha256sums+=(
-    "${_sig_sum}"
-    "${_pic_sig_sum}"
+    "${_famicom_sig_sum}"
+    "${_pic_famicom_sig_sum}"
   )
 fi
 if [[ "${_dl_agent}" == "true" ]]; then
   source+=(
-    "${_src}"
-    "${_pic_src}"
+    "${_famicom_src}"
+    "${_pic_famicom_src}"
   )
   sha256sums+=(
-    "${_sum}"
-    "${_pic_sum}"
+    "${_famicom_sum}"
+    "${_pic_famicom_sum}"
   )
 fi
 
@@ -356,10 +371,18 @@ _evmfs_get() {
 }
 
 _rom_extract() {
+  if [[ "${_famicom}" == "true" ]]; then
+    lrunzip \
+      -z \
+      --outfile "${_app_id}.FamiCom.fds" -- \
+      "${_app_id}.FamiCom.fds.tar.xz"
+  fi
+  if [[ "${_nes}" == "true" ]]; then
   lrunzip \
     -z \
-    --outfile "${_app_id}.Famicon.nes" -- \
-    "${_app_id}.Famicon.nes.tar.xz"
+    --outfile "${_app_id}.NES.nes" -- \
+    "${_app_id}.NES.nes.tar.xz"
+  fi
 }
 
 prepare() {
@@ -381,30 +404,33 @@ prepare() {
     -U
       "${_uuid_ja}"
     -o
-      "${srcdir}/${_pkg}-famicon"
+      "${srcdir}/${_pkg}-famicom"
   )
+  cp \
+    "${_app_id}.FamiCom.png" \
+    "${_app_id}.NES.png"
   videogame-launcher-create \
     "${_the_lost_levels_launcher_create_opts[@]}" \
-    "${_app_id}.Famicon"
-  if [[ -e "${_app_id}.nes" ]]; then
+    "${_app_id}.FamiCom"
+  if [[ -e "${_app_id}.fds" ]]; then
     mv \
-      "${_app_id}.nes" \
-      "${_app_id}.Famicon.nes"
+      "${_app_id}.fds" \
+      "${_app_id}.FamiCom.fds"
   fi
   _download="false"
   _extract="false"
   if [[ "${_dl_agent}" == "false" ]]; then
     _evmfs_get \
-      "${_app_id}.Famicon.nes.tar.xz" \
+      "${_app_id}.FamiCom.fds.tar.xz" \
       "${_sum}" \
       "${_uri}"
     _evmfs_get \
-      "${_app_id}.Famicon.png" \
-      "${_pic_sum}" \
-      "${_pic_uri}"
+      "${_app_id}.FamiCom.png" \
+      "${_pic_famicom_sum}" \
+      "${_pic_famicom_uri}"
   fi
-  if [[ ! -e "${_app_id}.nes" && \
-        ! -e "${_app_id}.Famicon.nes" ]]; then
+  if [[ ! -e "${_app_id}.fds" && \
+        ! -e "${_app_id}.FamiCom.fds" ]]; then
     _extract="true"
   fi
   if [[ "${_extract}" == "true" ]]; then
@@ -464,7 +490,7 @@ _lang_provides() {
   done
 }
 
-package_super-mario-bros-2-famicon() {
+package_super-mario-bros-2-famicom() {
   local \
     _games_dir \
     _game_dir \
@@ -473,7 +499,7 @@ package_super-mario-bros-2-famicon() {
     _install_shared_opts=() \
     _termux_shortcut_new_opts=() \
     _data_path
-  pkgdesc="${pkgdesc}. Famicon Japanese version."
+  pkgdesc="${pkgdesc}. FamiCom Japanese version."
   _usr="$( \
     _usr_get)"
   _games_dir="${_usr}/games"
@@ -488,32 +514,32 @@ package_super-mario-bros-2-famicon() {
     "${pkgver}" \
     "ja"
   _lang_provides \
-    "${_pkg}-famicon" \
+    "${_pkg}-famicom" \
     "${pkgver}" \
     "ja"
   install \
     -vDm755 \
-    "${_pkg}-famicon" \
-    "${pkgdir}/usr/bin/${_pkg}-famicon"
+    "${_pkg}-famicom" \
+    "${pkgdir}/usr/bin/${_pkg}-famicom"
   ln \
     -s \
-    "${_usr}/bin/${pkgbase}-famicon" \
+    "${_usr}/bin/${pkgbase}-famicom" \
     "${pkgdir}/usr/bin/${_pkg}"
   _launcher_install \
-    "${_app_id}.Famicon" \
+    "${_app_id}.FamiCom" \
     "${_uuid_ja}"
   install \
     -vdm755 \
-    "${pkgdir}/usr/games/${_app_id}.Famicon"
+    "${pkgdir}/usr/games/${_app_id}.FamiCom"
   if [[ "${_os}" == "Android" ]]; then
     _data_path="/storage/emulated/0/Android/media/${_app_id}"
     _install_shared_opts+=(
       -v
-      "${srcdir}/${_app_id}.Famicon.nes"
+      "${srcdir}/${_app_id}.FamiCom.fds"
       "${pkgdir}"
       "/usr/games/${_app_id}"
       "Android/media/${_app_id}"
-      "${_uuid_ja}.nes"
+      "${_uuid_ja}.fds"
     )
     termux-install-shared \
       "${_install_shared_opts[@]}"
@@ -527,23 +553,111 @@ package_super-mario-bros-2-famicon() {
     )
     termux-shortcut-new \
       "${_termux_shortcut_new_opts[@]}" \
-      "${_app_id}.Famicon.desktop"
+      "${_app_id}.FamiCom.desktop"
     install \
       -vDm644 \
-      "${srcdir}/${_app_id}.Famicon.png" \
+      "${srcdir}/${_app_id}.FamiCom.png" \
       "${pkgdir}/home/.shortcuts/icons/${_game_title} (${_uuid_ja}).png"
   elif [[ "${_os}" == "GNU/Linux" ]]; then
     _data_path="${_game_dir}"
     install \
       -vDm644 \
-      "${srcdir}/${_app_id}.Famicon.nes" \
-      "${pkgdir}/usr/games/${_app_id}/${_uuid_ja}.nes"
+      "${srcdir}/${_app_id}.FamiCom.fds" \
+      "${pkgdir}/usr/games/${_app_id}/${_uuid_ja}.fds"
   fi
   for _lang in "any" \
                "ja"; do
     echo \
-      "${_data_path}/${_uuid_ja}.nes" > \
-      "${pkgdir}/usr/games/${_app_id}.Famicon/${_lang}"
+      "${_data_path}/${_uuid_ja}.fds" > \
+      "${pkgdir}/usr/games/${_app_id}.FamiCom/${_lang}"
+  done
+}
+
+package_super-mario-bros-2-nes() {
+  local \
+    _games_dir \
+    _game_dir \
+    _lang \
+    _usr \
+    _install_shared_opts=() \
+    _termux_shortcut_new_opts=() \
+    _data_path \
+    _pkgdesc=()
+  _pkgdesc=(
+    "${pkgdesc}."
+    "Nintendo Entertainment System version."
+  )
+  pkgdesc="${_pkgdesc[*]}"
+  _usr="$( \
+    _usr_get)"
+  _games_dir="${_usr}/games"
+  _game_dir="${_games_dir}/${_app_id}"
+  provides=(
+    "${_pkg}=${pkgver}"
+    "${_pkg}-the-lost-levels=${pkgver}"
+    "${_pkg}-en=${pkgver}"
+  )
+  _lang_provides \
+    "${_pkg}" \
+    "${pkgver}" \
+    "en"
+  _lang_provides \
+    "${_pkg}-nes" \
+    "${pkgver}" \
+    "en"
+  install \
+    -vDm755 \
+    "${_pkg}-nes" \
+    "${pkgdir}/usr/bin/${_pkg}-nes"
+  ln \
+    -s \
+    "${_usr}/bin/${pkgbase}-nes" \
+    "${pkgdir}/usr/bin/${_pkg}"
+  _launcher_install \
+    "${_app_id}.NES" \
+    "${_uuid_en}"
+  install \
+    -vdm755 \
+    "${pkgdir}/usr/games/${_app_id}.NES"
+  if [[ "${_os}" == "Android" ]]; then
+    _data_path="/storage/emulated/0/Android/media/${_app_id}"
+    _install_shared_opts+=(
+      -v
+      "${srcdir}/${_app_id}.NES.nes"
+      "${pkgdir}"
+      "/usr/games/${_app_id}"
+      "Android/media/${_app_id}"
+      "${_uuid_en}.nes"
+    )
+    termux-install-shared \
+      "${_install_shared_opts[@]}"
+    install \
+      -vdm755 \
+      "${pkgdir}/home/.shortcuts"
+    _termux_shortcut_new_opts+=(
+      -v
+      -o
+        "${pkgdir}/home/.shortcuts"
+    )
+    termux-shortcut-new \
+      "${_termux_shortcut_new_opts[@]}" \
+      "${_app_id}.NES.desktop"
+    install \
+      -vDm644 \
+      "${srcdir}/${_app_id}.NES.png" \
+      "${pkgdir}/home/.shortcuts/icons/${_game_title} (${_uuid_en}).png"
+  elif [[ "${_os}" == "GNU/Linux" ]]; then
+    _data_path="${_game_dir}"
+    install \
+      -vDm644 \
+      "${srcdir}/${_app_id}.NES.nes" \
+      "${pkgdir}/usr/games/${_app_id}/${_uuid_en}.nes"
+  fi
+  for _lang in "any" \
+               "en"; do
+    echo \
+      "${_data_path}/${_uuid_en}.nes" > \
+      "${pkgdir}/usr/games/${_app_id}.NES/${_lang}"
   done
 }
 
