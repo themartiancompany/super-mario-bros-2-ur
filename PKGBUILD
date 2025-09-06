@@ -459,7 +459,7 @@ _lang_provides() {
   done
 }
 
-package_super-mario-2-famicon() {
+package_super-mario-bros-2-famicon() {
   local \
     _games_dir \
     _game_dir \
