@@ -221,8 +221,6 @@ _pic_sig_uri="${_evmfs_sig_dir}/${_pic_sig_sum}"
 source=(
 )
 sha256sums=(
-  "6bfa340ae8c696f7eafd2bc96496d8eea4152b870f4018b06a9fb5645ffea8ae"
-  "b25117ba185a5af887b1e14fe8698a4de946475d17998637a88b5c06b58fde44"
 )
 if [[ "${_evmfs}" == "true" ]]; then
   makedepends+=(
@@ -494,8 +492,8 @@ package_super-mario-2-famicon() {
     "${pkgdir}/usr/bin/${_pkg}-famicon"
   ln \
     -s \
-    "${_usr}/bin/${pkgbase}" \
-    "${pkgdir}/usr/bin/${_pkg}-famicon"
+    "${_usr}/bin/${pkgbase}-famicon" \
+    "${pkgdir}/usr/bin/${_pkg}"
   _launcher_install \
     "${_app_id}.Famicon" \
     "${_uuid_ja}"
