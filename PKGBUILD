@@ -121,7 +121,7 @@ _videogame_launcher_pkgver="0.0.0.0.0.0.0.0.0.0.1.1"
 pkgrel=1
 _pkgdesc=(
   "1986 platform game developed"
-  "by Nintendo R&D4 for the"
+  'by Nintendo R&D4 for the'
   "FamiCom Disk System (FDS)."
 )
 pkgdesc="${_pkgdesc[*]}"
