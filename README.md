@@ -19,7 +19,7 @@
 [comment]: <> (License along with this program.)
 [comment]: <> (If not, see <https://www.gnu.org/licenses/>.)
 
-# `super-mario-bros`
+# `super-mario-bros-2`
 
 universal recipe for
 [user repo](
