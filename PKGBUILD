@@ -640,7 +640,7 @@ package_super-mario-bros-2-famicom() {
     install \
       -vDm644 \
       "${srcdir}/${_app_id}.FamiCom.png" \
-      "${pkgdir}/home/.shortcuts/icons/${_game_title} (${_uuid_ja}).png"
+      "${pkgdir}/home/.shortcuts/icons/${_game_title}.png"
   elif [[ "${_os}" == "GNU/Linux" ]]; then
     _data_path="${_game_dir}"
     install \
@@ -724,7 +724,7 @@ package_super-mario-bros-2-nes() {
     install \
       -vDm644 \
       "${srcdir}/${_app_id}.NES.png" \
-      "${pkgdir}/home/.shortcuts/icons/${_game_title} (NES) (${_uuid_en}).png"
+      "${pkgdir}/home/.shortcuts/icons/${_game_title} (NES).png"
   elif [[ "${_os}" == "GNU/Linux" ]]; then
     _data_path="${_game_dir}"
     install \
