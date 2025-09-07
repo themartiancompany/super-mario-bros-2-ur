@@ -140,7 +140,7 @@ if [[ "${_fceux}" == "true" ]]; then
 fi
 if [[ "${_retroarch}" == "true" ]]; then
   depends+=(
-    "libretro-quicknes"
+    "libretro-fceumm"
   )
 fi
 makedepends=(
